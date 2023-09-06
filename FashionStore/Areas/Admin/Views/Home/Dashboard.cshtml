@@ -1,0 +1,87 @@
+<script>
+    window.onload = function () {
+
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            theme: "light2", // "light1", "light2", "dark1", "dark2"
+            title: {
+                text: "Thống kê doanh thu"
+            },
+            axisY: {
+                title: "Doanh thu"
+            },
+            data: [{
+                type: "column",
+                dataPoints: @Html.Raw(ViewBag.DataPoints)
+                }]
+        });
+        chart.render();
+
+    }
+</script>
+<h5>ĐÂY LÀ TRANG QUẢN TRỊ VIÊN</h5>
+<div class="container">
+    <div class="row">
+        <div class="card col-lg-4 ml-3">
+            <div class="card-header">
+                Thống kê doanh thu @DateTime.Now.ToShortDateString()
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <b>Tổng đơn hàng: </b> @ViewBag.sumOrderToday.ToString("N0")
+                </li>
+                <li class="list-group-item">
+                    <b>Tổng doanh thu: </b> @ViewBag.sumSaleToday.ToString("N0")
+                </li>
+            </ul>
+        </div>
+
+        <div class="card col-lg-4 ml-3">
+            <div class="card-header">
+                Thống kê doanh thu <b>Tháng @DateTime.Now.Month</b>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <b>Tổng đơn hàng: </b> @ViewBag.sumOrderMonth.ToString("N0")
+                </li>
+                <li class="list-group-item">
+                    <b>Tổng doanh thu: </b> @ViewBag.sumSaleMonth.ToString("N0")
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="card col-lg-4 ml-3 mt-4 mr-3">
+            <div class="card-header">
+                Thống kê doanh thu <b>Năm @DateTime.Now.Year</b>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <b>Tổng đơn hàng: </b> @ViewBag.sumOrderYear.ToString("N0")
+                </li>
+                <li class="list-group-item">
+                    <b>Tổng doanh thu: </b> @ViewBag.sumSaleYear.ToString("N0")
+                </li>
+            </ul>
+        </div>
+
+        <div class="card col-lg-4 mt-4">
+            <div class="card-header">
+                Thống kê người dùng
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <b>Khách hàng: </b> @ViewBag.sumCustomer
+                </li>
+                <li class="list-group-item">
+                    <b>Nhân viên: </b> @ViewBag.sumStaff
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="col-12 mt-4">
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</div>
+

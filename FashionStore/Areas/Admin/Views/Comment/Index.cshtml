@@ -1,0 +1,185 @@
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model IEnumerable<FashionStore.Models.Comment>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+        background-color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh
+    }
+
+    h1 {
+        color: #484848;
+        font-size: 40px;
+        font-weight: bold;
+        font-family: 'Times New Roman';
+        letter-spacing: 7px;
+        cursor: pointer
+    }
+
+        h1 span {
+            transition: .5s linear
+        }
+
+        h1:hover span:nth-child(1) {
+            margin-right: 5px
+        }
+
+            h1:hover span:nth-child(1):after {
+                content: "";
+            }
+
+        h1:hover span:nth-child(2) {
+            margin-left: 20px
+        }
+
+        h1:hover span {
+            color: cornflowerblue;
+            text-shadow: 0 0 5px cornflowerblue, 0 0 10px cornflowerblue, 0 0 20px cornflowerblue;
+        }
+    /*made with ❤, by qpi65*/
+
+
+    .pagination-container {
+        display: flex;
+        flex: 1;
+    }
+
+    .pagination {
+        display: flex;
+        flex: 1;
+        list-style: none;
+        padding: 0;
+        gap: .625rem;
+    }
+
+    .page-item, .page-link {
+        height: 2rem;
+        width: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .PagedList-pageCountAndLocation {
+        justify-content: start;
+        order: -1;
+        flex: 1;
+        // expands the div to max available width
+    }
+</style>
+
+<h1><span>Quản lý bình luận</span></h1>
+<p>
+    <a asp-action="Create">
+        <button type="button" class="btn btn-outline-info btn-icon-text">
+            Thêm mới
+            <i class="mdi mdi-gamepad-round btn-icon-prepend"></i>
+        </button>
+    </a>
+</p>
+<table class="table table-striped">
+    <thead class="table-info">
+        <tr>
+            @*<th>
+                @Html.DisplayNameFor(model => model.IdPost)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StatusComment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateAt)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.IdCustomerNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdProductNavigation)
+            </th>*@
+            <th>Trả lời</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+           @* <td>
+                @Html.DisplayFor(modelItem => item.IdPost)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @if (item.StatusComment == 0)
+                {
+                    <input type="checkbox" checked data-idComment="@item.IdComment" />
+                }
+                else
+                {
+                    <input type="checkbox" data-idComment="@item.IdComment" />
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateAt)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.IdCustomerNavigation.CustomerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdProductNavigation.ProductName)
+            </td>*@
+            <td>
+                <a asp-controller="CommentRep" asp-action="Index" asp-route-idComment="@item.IdComment">
+                    Trả lời
+                </a>
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdComment">
+                        <button type="button" class="btn btn-outline-success btn-icon-text">
+                            Sửa
+                            <i class="mdi mdi-pencil-box-multiple btn-icon-append"></i>
+                        </button>
+                    </a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdComment">
+                        <button type="button" class="btn btn-outline-warning btn-icon-text">
+                            Xóa
+                            <i class="mdi mdi-delete-alert btn-icon-prepend"></i>
+                        </button>
+                    </a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@Html.PagedListPager((IPagedList) Model,page => Url.Action("Index", new {page}))
+
+@section Scripts{
+    <script type="text/javascript">
+        $('input[type=checkbox]').on('click', function () {
+            var idComment = $(this).attr('data-idComment');
+            console.log(idComment);
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Comment/updateCheck/",
+                data: { idComment: idComment },
+                dataType: "Json",
+                success: function (result) {
+                    alert(result);
+                }
+            });
+        });
+    </script>
+}

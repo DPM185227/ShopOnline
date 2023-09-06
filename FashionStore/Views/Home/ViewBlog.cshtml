@@ -1,0 +1,93 @@
+@using Microsoft.AspNetCore.Http;
+@model FashionStore.Models.Post
+@{
+    var listComment = (List<Comment>)ViewBag.listComment;
+}
+<section class="bg0 p-t-52 p-b-20">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10">
+                <div class="p-t-32">
+                    <span class="flex-w flex-m stext-111 cl2 p-b-19">
+                        <span>
+                            <span class="cl4">By</span> @Model.IdStaffNavigation.StaffName
+                            <span class="cl12 m-l-4 m-r-6">|</span>
+                        </span>
+
+                        <span>
+                            <i class="fa-sharp fa-solid fa-eye"></i> @Model.ViewPost
+                        </span>
+                    </span>
+
+                    <h4 class="ltext-109 cl2 p-b-28">
+                        @Model.Title
+                    </h4>
+
+                    <p class="stext-117 cl6 p-b-26">
+                        @Model.Content
+                    </p>
+
+                    <p class="stext-117 cl6 p-b-26 m-auto">
+                        @Html.Raw(Model.DescriptionPost)
+                    </p>
+                </div>
+                <!---->
+                <h5 style="font-weight:bold;margin-top:30px;text-align:center;">DANH SÁCH BÌNH LUẬN</h5>
+                <div class="p-l-20 p-t-20">
+                    <div class="row">
+                        @if (listComment.Count() > 0)
+                        {
+                            foreach (var itemComent in listComment)
+                            {
+                                <div class="media">
+                                    <img class="mr-3" src="~/@itemComent.IdCustomerNavigation.CustomerImage" alt="Generic placeholder image" style="width:50px;height:50px;border-radius:50px;">
+                                    <div class="media-body">
+                                        <h6 class="mt-0"><b>@itemComent.IdCustomerNavigation.CustomerName</b></h6>
+                                        @itemComent.Content
+                                    </div>
+                                    <p>
+                                    @if (itemComent.IdCustomer == Context.Session.GetString("_idCustomer")){
+                                       <p>
+                                           <a class="btn btn-danger ml-4" asp-action="DeleteComment" asp-controller="Home" asp-route-idPost="@itemComent.IdPost" asp-route-id="@itemComent.IdComment">Xóa bình luận</a>
+                                       </p> 
+                                    }
+
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <span>Hiện tại bài viết chưa có bình luận nào</span>
+                        }
+                    </div>
+                </div>
+                <!--  -->
+                </hr>
+                <div class="p-t-40">
+                    <h5 class="mtext-113 cl2 p-b-12">
+                        Leave a Comment
+                    </h5>
+                    @if (Context.Session.GetString("_idCustomer") != null)
+                    {
+                        if (ViewBag.Error != null)
+                        {
+                            <span>@ViewBag.Error</span>
+                        }
+                        <form asp-action="PostComment" asp-controller="Home" asp-route-id="@Model.IdBaiViet" method="POST">
+                            <div class="bor19 m-b-20">
+                                <textarea class="stext-111 cl2 plh3 size-124 p-lr-18 p-tb-15" name="cmt" required placeholder="Comment..."></textarea>
+                            </div>
+                            <button class="flex-c-m stext-101 cl0 size-125 bg3 bor2 hov-btn3 p-lr-15 trans-04">
+                                Đăng tải bình luận
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a asp-action="LoginCustomer" asp-controller="Customer" class="btn btn-primary">Đăng nhập</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,85 @@
+﻿@model FashionStore.Models.Order
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Order</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Idorder" />
+            <div class="form-group">
+                <label asp-for="IdCustomer" class="control-label"></label>
+                <select asp-for="IdCustomer" class="form-control" asp-items="ViewBag.IdCustomer"></select>
+                <span asp-validation-for="IdCustomer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdStaff" class="control-label"></label>
+                <select asp-for="IdStaff" class="form-control" asp-items="ViewBag.IdStaff"></select>
+                <span asp-validation-for="IdStaff" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingPrice" class="control-label"></label>
+                <input asp-for="ShippingPrice" class="form-control" />
+                <span asp-validation-for="ShippingPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiscountPrice" class="control-label"></label>
+                <input asp-for="DiscountPrice" class="form-control" />
+                <span asp-validation-for="DiscountPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FullName" class="control-label"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressSend" class="control-label"></label>
+                <input asp-for="AddressSend" class="form-control" />
+                <span asp-validation-for="AddressSend" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalAll" class="control-label"></label>
+                <input asp-for="TotalAll" class="form-control" />
+                <span asp-validation-for="TotalAll" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TypeOrder" class="control-label"></label>
+                <input asp-for="TypeOrder" class="form-control" />
+                <span asp-validation-for="TypeOrder" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreateAt" class="control-label"></label>
+                <input asp-for="CreateAt" class="form-control" />
+                <span asp-validation-for="CreateAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdateAt" class="control-label"></label>
+                <input asp-for="UpdateAt" class="form-control" />
+                <span asp-validation-for="UpdateAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,112 @@
+﻿@{
+    ViewData["Title"] = "THỐNG KÊ";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <input type="date" id="timeStart"/>
+            <input type="date" id="timeEnd"/>
+            <input type="submit" value="Thống kê" id="btnSubmit" />
+        </div>
+
+        <div id="showThongKe" class="mt-4">
+            <h5 style="font-weight:bold;">THỐNG KÊ <button id="btnThuGon">Thu gọn</button></h5>
+            <div class="row">
+                <!-- đơn hàng -->
+                <div class="card col-lg-4 ml-3">
+                    <div class="card-header">
+                          Đơn hàng
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            Tổng đơn hàng: <b id="countOrder"></b>
+                        </li>
+                        <li class="list-group-item">
+                            Đơn hàng thành công: <b id="orderConfirm"></b>
+                        </li>
+                        <li class="list-group-item">
+                            Tổng sản phẩm đã bán: <b id="orderBuy"></b>
+                        </li>
+                        <li class="list-group-item">
+                            Khách hàng mua nhiều nhất: <b id="customerOrder"></b>
+                        </li>
+                    </ul>
+                </div>
+                <!-- doanh thu -->
+                <div class="card col-lg-4 ml-3">
+                    <div class="card-header">
+                        Doanh Thu
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            Tổng tiền: <b id="orderSum"></b>
+                        </li>
+                        <li class="list-group-item">
+                            Doanh thu trung bình: <b id="avgOneDay"></b>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        $('#showThongKe').hide();
+    });
+
+    $('#btnSubmit').on('click',function(){
+        var getStartDay = $('#timeStart').val();
+        var getEndDay = $('#timeEnd').val();
+
+        var startDay = new Date(getStartDay);
+        var endDay = new Date(getEndDay);
+
+        if (startDay <= endDay)
+        {
+            if (getEndDay !== "" && getEndDay !== "") {
+                $.ajax({
+                    type: "Post",
+                    url: "/Admin/Home/Result/",
+                    data: {
+                        startDay: getStartDay,
+                        endDay: getEndDay
+                    },
+                    dataType: "JSON",
+                    success: function (reponse) {
+                        $('#countOrder').text(reponse.countOrder);
+                        $('#orderConfirm').text(reponse.orderConfirm);
+                        $('#orderBuy').text(reponse.countOrder);
+                        $('#customerOrder').text(reponse.getCustomer);
+                        $('#orderSum').text(convertMoney(reponse.orderSum));
+                        $('#avgOneDay').text(convertMoney(reponse.avg1Day));
+
+                        $('#showThongKe').show('slow');
+                    }
+                });
+            }
+            else {
+                sweetAlert("Vui lòng chọn đủ 2 giá trị");
+            }
+        }
+        else
+        {
+            sweetAlert("Vui lòng chọn thời gian bắt đầu thấp hơn thời gian kết thúc");
+        }
+    });
+
+    // convert to money
+    function convertMoney(amt) {
+        return amt.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+    };
+
+    //
+    $('#btnThuGon').on('click',function(){
+        $('#showThongKe').hide();
+    });
+
+    // 
+</script>

@@ -1,0 +1,111 @@
+@model IEnumerable<FashionStore.Models.SaleProductPercent>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+        background-color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh
+    }
+
+    h1 {
+        color: #484848;
+        font-size: 40px;
+        font-weight: bold;
+        font-family: 'Times New Roman';
+        letter-spacing: 7px;
+        cursor: pointer
+    }
+
+        h1 span {
+            transition: .5s linear
+        }
+
+        h1:hover span:nth-child(1) {
+            margin-right: 5px
+        }
+
+            h1:hover span:nth-child(1):after {
+                content: "";
+            }
+
+        h1:hover span:nth-child(2) {
+            margin-left: 20px
+        }
+
+        h1:hover span {
+            color: cornflowerblue;
+            text-shadow: 0 0 5px cornflowerblue, 0 0 10px cornflowerblue, 0 0 20px cornflowerblue;
+        }
+    /*made with ❤, by qpi65*/
+
+</style>
+
+<h1><span>Quản lý phần trăm giảm giá</span></h1>
+
+<p>
+    <a asp-action="Create">
+        <button type="button" class="btn btn-outline-info btn-icon-text">
+            Thêm mới
+            <i class="mdi mdi-gamepad-round btn-icon-prepend"></i>
+        </button>
+    </a>
+</p>
+<table class="table table-striped">
+    <thead class="table-info">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SalePercent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdProductNavigation)
+            </th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SalePercent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdProductNavigation.IdProduct)
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdSale">
+                        <button type="button" class="btn btn-outline-success btn-icon-text">
+                            Sửa
+                            <i class="mdi mdi-pencil-box-multiple btn-icon-append"></i>
+                        </button>
+                    </a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdSale">
+                        <button type="button" class="btn btn-outline-warning btn-icon-text">
+                            Xóa
+                            <i class="mdi mdi-delete-alert btn-icon-prepend"></i>
+                        </button>
+                    </a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

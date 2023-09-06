@@ -1,0 +1,173 @@
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IEnumerable<FashionStore.Models.Order>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+        background-color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh
+    }
+
+    h1 {
+        color: #484848;
+        font-size: 40px;
+        font-weight: bold;
+        font-family: 'Times New Roman';
+        letter-spacing: 7px;
+        cursor: pointer
+    }
+
+        h1 span {
+            transition: .5s linear
+        }
+
+        h1:hover span:nth-child(1) {
+            margin-right: 5px
+        }
+
+            h1:hover span:nth-child(1):after {
+                content: "";
+            }
+
+        h1:hover span:nth-child(2) {
+            margin-left: 20px
+        }
+
+        h1:hover span {
+            color: cornflowerblue;
+            text-shadow: 0 0 5px cornflowerblue, 0 0 10px cornflowerblue, 0 0 20px cornflowerblue;
+        }
+    /*made with ❤, by qpi65*/
+
+
+
+    .pagination-container {
+        display: flex;
+        flex: 1;
+    }
+
+    .pagination {
+        display: flex;
+        flex: 1;
+        list-style: none;
+        padding: 0;
+        gap: .625rem;
+    }
+
+    .page-item, .page-link {
+        height: 2rem;
+        width: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .PagedList-pageCountAndLocation {
+        justify-content: start;
+        order: -1;
+        flex: 1;
+        // expands the div to max available width
+    }
+</style>
+<h1><span>Quản lý đơn đặt hàng</span></h1>
+
+<p>
+    <a asp-action="Create">
+        <button type="button" class="btn btn-outline-info btn-icon-text">
+            Thêm mới
+            <i class="mdi mdi-gamepad-round btn-icon-prepend"></i>
+        </button>
+    </a>
+</p>
+<table class="table table-striped">
+    <thead class="table-info">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ShippingPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalAll)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TypeOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdCustomerNavigation)
+            </th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.ShippingPrice.Value.ToString("N0") <span>VND</span>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AddressSend)
+                </td>
+                <td>
+                    @item.TotalAll.Value.ToString("N0") <span>VND</span>
+                </td>
+                <td>
+                    <select asp-for="@item.TypeOrder" data-idOrder="@item.Idorder" id="TypeOrder_@item.Idorder">
+                        <option value=0>Đã xác nhận đơn</option>
+                        <option value=1>Đang đóng gói</option>
+                        <option value=2>Đang vận chuyển</option>
+                        <option value=3>Đến kho</option>
+                        <option value=4>Sắp giao hàng</option>
+                        <option value=5>Thành công</option>
+                    </select>
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.IdCustomerNavigation.CustomerName)
+                </td>*@
+                <td>
+                    <a asp-action="Index" asp-controller="OrderDetail" asp-route-id="@item.Idorder">
+                        <button type="button" class="btn btn-outline-danger btn-icon-text">
+                            Xem chi tiết
+                            <i class="mdi mdi-crop-free"></i>
+                        </button>
+                        </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.PagedListPager((IPagedList) Model,page => Url.Action("Index", new {page}))
+
+@section Scripts{
+    <script type="text/javascript">
+        $('td > select').change(function (e) {
+            e.preventDefault();
+            var idOrder = $(this).attr('data-idOrder');
+            var getSelect = $('#TypeOrder_'+idOrder+' option:selected').attr('value');
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Order/updateType/",
+                data: { idOrder: idOrder, type: getSelect },
+                dataType: "JSON",
+                success: function (reponse) {
+                    alert(reponse);
+                    setTimeout("location.reload()", 1000);
+                }
+            });
+        });
+    </script>
+}

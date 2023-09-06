@@ -1,0 +1,121 @@
+@model FashionStore.Models.Product
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    mark {
+        box-shadow: 0 0 5px cyan, 0 0 25px cyan;
+    }
+
+    button:hover {
+        box-shadow: 0 0 5px cyan, 0 0 25px cyan, 0 0 50px cyan, 0 0 100px cyan, 0 0 200px cyan;
+    }
+
+    mark {
+        border: 2px solid;
+        border-radius: 12px;
+        padding: 5px;
+    }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <h1 class="text-center">
+            <mark class="bg-success text-white">
+                Tạo mới
+                <i class="mdi mdi-account-edit-outline"></i>
+            </mark>
+        </h1>
+
+<h4>Sản phẩm</h4>
+<hr />
+<div class="row">
+        <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ProductName" class="control-label"></label>
+                <input asp-for="ProductName" class="form-control" id="nameProduct" />
+                <span asp-validation-for="ProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductNameSlug" class="control-label"></label>
+            <input asp-for="ProductNameSlug" class="form-control" id="slugNamProduct" disabled />
+                <span asp-validation-for="ProductNameSlug" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductPrice" class="control-label"></label>
+                <input asp-for="ProductPrice" class="form-control" />
+                <span asp-validation-for="ProductPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductDescription" class="control-label"></label>
+                <textarea asp-for="ProductDescription" class="form-control" name="ckEditor"></textarea>
+                <span asp-validation-for="ProductDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdCategory" class="control-label"></label>
+                <select asp-for="IdCategory" class ="form-control" asp-items="ViewBag.IdCategory"></select>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="IdStaff" class="control-label"></label>
+                <select asp-for="IdStaff" class ="form-control" asp-items="ViewBag.IdStaff"></select>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="IdBranch" class="control-label"></label>
+                <select asp-for="IdBranch" class ="form-control" asp-items="ViewBag.IdBranch"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+<div>
+    <a asp-action="Index">
+        <button type="button" class="btn btn-info btn-icon-text">
+            <i class="mdi mdi-keyboard-return"></i>
+            Quay về
+        </button>
+    </a>
+</div>
+</div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+       window.onload = () =>{
+            CKEDITOR.replace('ckEditor', {
+                language: 'VN',
+                uiColor: '#9AB8F3'
+            });
+       };
+       function convert_vi_to_en(str) {
+            str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+            str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+            str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+            str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+            str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+            str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+            str = str.replace(/đ/g, "d");
+            str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A");
+            str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E");
+            str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I");
+            str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "O");
+            str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "U");
+            str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "Y");
+            str = str.replace(/Đ/g, "D");
+            str = str.replace(/!|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, " ");
+            str = str.replace(/  +/g, ' ');
+            return str;
+        }
+
+    $("#nameProduct").keyup(function () {
+        var inputText = $(this).val();
+        inputText = inputText.toLowerCase();
+        inputText = convert_vi_to_en(inputText).replace(/ |  /g, '-');
+        $("#slugNamProduct").val(inputText);
+    })
+    </script>
+}

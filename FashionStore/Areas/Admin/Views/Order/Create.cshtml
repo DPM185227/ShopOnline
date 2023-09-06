@@ -1,0 +1,105 @@
+@model FashionStore.Models.Order
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    mark {
+        box-shadow: 0 0 5px cyan, 0 0 25px cyan;
+    }
+
+    button:hover {
+        box-shadow: 0 0 5px cyan, 0 0 25px cyan, 0 0 50px cyan, 0 0 100px cyan, 0 0 200px cyan;
+    }
+
+    mark {
+        border: 2px solid;
+        border-radius: 12px;
+        padding: 5px;
+    }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <h1 class="text-center">
+            <mark class="bg-success text-white">
+                Tạo mới
+                <i class="mdi mdi-account-edit-outline"></i>
+            </mark>
+        </h1>
+
+<h4>Đặt hàng</h4>
+<hr />
+<div class="row">
+    <div class="col-9">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Idorder" class="control-label"></label>
+                <input asp-for="Idorder" class="form-control" />
+                <span asp-validation-for="Idorder" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdCustomer" class="control-label"></label>
+                <select asp-for="IdCustomer" class ="form-control" asp-items="ViewBag.IdCustomer"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdStaff" class="control-label"></label>
+                <select asp-for="IdStaff" class ="form-control" asp-items="ViewBag.IdStaff"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShippingPrice" class="control-label"></label>
+                <input asp-for="ShippingPrice" class="form-control" />
+                <span asp-validation-for="ShippingPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiscountPrice" class="control-label"></label>
+                <input asp-for="DiscountPrice" class="form-control" />
+                <span asp-validation-for="DiscountPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FullName" class="control-label"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressSend" class="control-label"></label>
+                <input asp-for="AddressSend" class="form-control" />
+                <span asp-validation-for="AddressSend" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreateAt" class="control-label"></label>
+                <input asp-for="CreateAt" class="form-control" />
+                <span asp-validation-for="CreateAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdateAt" class="control-label"></label>
+                <input asp-for="UpdateAt" class="form-control" />
+                <span asp-validation-for="UpdateAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">
+        <button type="button" class="btn btn-info btn-icon-text">
+            <i class="mdi mdi-keyboard-return"></i>
+            Quay về
+        </button></a>
+</div>
+</div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,214 @@
+@model FashionStore.Models.Staff
+@using Microsoft.AspNetCore.Http;
+@{
+    Layout = null;
+}
+@*<style>
+    body {
+        background: url('http://i.imgur.com/Eor57Ae.jpg') no-repeat fixed center center;
+        background-size: cover;
+        font-family: Montserrat;
+    }
+
+    .logo {
+        width: 213px;
+        height: 36px;
+        background: url('http://i.imgur.com/fd8Lcso.png') no-repeat;
+        margin: 30px auto;
+    }
+
+    .login-block {
+        width: 320px;
+        padding: 20px;
+        background: #fff;
+        border-radius: 5px;
+        border-top: 5px solid #ff656c;
+        margin: 0 auto;
+    }
+
+        .login-block h1 {
+            text-align: center;
+            color: #000;
+            font-size: 18px;
+            text-transform: uppercase;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .login-block input {
+            width: 100%;
+            height: 42px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-family: Montserrat;
+            padding: 0 20px 0 50px;
+            outline: none;
+        }
+
+            .login-block input#username {
+                background: #fff url('http://i.imgur.com/u0XmBmv.png') 20px top no-repeat;
+                background-size: 16px 80px;
+            }
+
+                .login-block input#username:focus {
+                    background: #fff url('http://i.imgur.com/u0XmBmv.png') 20px bottom no-repeat;
+                    background-size: 16px 80px;
+                }
+
+            .login-block input#password {
+                background: #fff url('http://i.imgur.com/Qf83FTt.png') 20px top no-repeat;
+                background-size: 16px 80px;
+            }
+
+                .login-block input#password:focus {
+                    background: #fff url('http://i.imgur.com/Qf83FTt.png') 20px bottom no-repeat;
+                    background-size: 16px 80px;
+                }
+
+            .login-block input:active, .login-block input:focus {
+                border: 1px solid #ff656c;
+            }
+
+        .login-block button {
+            width: 100%;
+            height: 40px;
+            background: #ff656c;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid #e15960;
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+            font-family: Montserrat;
+            outline: none;
+            cursor: pointer;
+        }
+
+            .login-block button:hover {
+                background: #ff7b81;
+            }
+
+</style>
+<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+<div class="logo"></div>
+<form class="login-block" asp-action="LoginDashboard" asp-controller="Home" method="post">
+    @if (Context.Session.GetInt32("_loginFail") != null)
+    {
+        <h5 style="color:red;text-align:center;">Đăng nhập thất bại</h5>
+    }
+    <h1>Login</h1>
+    <input asp-for="UserName" type="text" value="" placeholder="Username" id="username" />
+    <input asp-for="Pass" type="password" value="" placeholder="Password" id="password" />
+    <button>Submit</button>
+</form>*@
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: url(https://picsum.photos/2500/1500?image=1041);
+        background-size: cover;
+        font-family: 'Times New Roman';
+    }
+
+    .box {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 25rem;
+        padding: 2.5rem;
+        box-sizing: border-box;
+        background: rgba(0, 0, 0, 0.6);
+        border-radius: 0.625rem;
+    }
+
+        .box h2 {
+            margin: 0 0 1.875rem;
+            padding: 0;
+            color: #fff;
+            text-align: center;
+        }
+
+        .box .inputBox {
+            position: relative;
+        }
+
+            .box .inputBox input {
+                width: 100%;
+                padding: 0.625rem 0;
+                font-size: 1rem;
+                color: #fff;
+                letter-spacing: 0.062rem;
+                margin-bottom: 1.875rem;
+                border: none;
+                border-bottom: 0.065rem solid #fff;
+                outline: none;
+                background: transparent;
+            }
+
+            .box .inputBox label {
+                position: absolute;
+                top: 0;
+                left: 0;
+                padding: 0.625rem 0;
+                font-size: 1rem;
+                color: #fff;
+                pointer-events: none;
+                transition: 0.5s;
+            }
+
+            .box .inputBox input:focus ~ label,
+            .box .inputBox input:valid ~ label,
+            .box .inputBox input:not([value=""]) ~ label {
+                top: -1.125rem;
+                left: 0;
+                color: #03a9f4;
+                font-size: 0.75rem;
+            }
+
+        .box input[type="submit"] {
+            border: none;
+            outline: none;
+            color: #fff;
+            background-color: #03a9f4;
+            padding: 0.625rem 1.25rem;
+            cursor: pointer;
+            border-radius: 0.312rem;
+            font-size: 1rem;
+        }
+
+        .box input[type="submit"]:hover {
+            background-color: #1cb1f5;
+        }
+        .box span{
+            margin: 0 0 1.875rem;
+    padding: 0;
+    color: #fff;
+    text-align: center;
+        }
+</style>
+<div class="box">
+    <h2>Login</h2>
+    <form class="login-block" asp-action="LoginDashboard" asp-controller="Home" method="post">
+        @if (ViewBag.errorlogin != null){
+            <span style="color:white;text-align:center;">
+                @ViewBag.errorlogin
+            </span>
+        }
+        <div class="inputBox">
+            <span>Username</span>
+            <input style="opacity:0px;border: none;" asp-for="UserName" type="text" placeholder="Vui lòng nhập tên đăng nhập" id="username" />           
+        </div>
+        <div class="inputBox">
+            <span>Password</span>
+            <input style="background: transparent;border: none;" asp-for="Pass" type="password" placeholder="Vui lòng nhập mật khẩu" />
+        </div>
+        <input type="submit" name="sign-in" value="Đăng Nhập">
+    </form>
+</div>
+

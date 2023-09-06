@@ -1,0 +1,120 @@
+@model FashionStore.Models.Branch
+
+@{
+    ViewData["Title"] = "Thêm mới";
+}
+
+<style>
+    mark {
+        box-shadow: 0 0 5px cyan, 0 0 25px cyan;
+    }
+
+    button:hover {
+        box-shadow: 0 0 5px cyan, 0 0 25px cyan, 0 0 50px cyan, 0 0 100px cyan, 0 0 200px cyan;
+    }
+
+    mark {
+        border: 2px solid;
+        border-radius: 12px;
+        padding: 5px;
+    }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <h1 class="text-center">
+            <mark class="bg-success text-white">
+                Tạo mới
+                <i class="mdi mdi-account-edit-outline"></i>
+            </mark>
+        </h1>
+
+<h4>Chi Nhánh</h4>
+<hr />
+<div class="row">
+    <div class="col-9">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="LocationName" class="control-label"></label>
+                <input asp-for="LocationName" class="form-control" />
+                <span asp-validation-for="LocationName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LoactionMap" class="control-label"></label>
+                <input asp-for="LoactionMap" class="form-control" />
+                <span asp-validation-for="LoactionMap" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneBrand" class="control-label"></label>
+                <input asp-for="PhoneBrand" class="form-control" />
+                <span asp-validation-for="PhoneBrand" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CodeProvince" class="control-label"></label>
+                <select asp-for="CodeProvince" class="form-control codeProvince" asp-items="ViewBag.CodeProvince"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CodeDistrict" class="control-label"></label>
+                <select asp-for="CodeDistrict" class="form-control selection" id="codeDistrict">
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Thêm" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">
+        <button type="button" class="btn btn-info btn-icon-text">            
+            <i class="mdi mdi-keyboard-return"></i>
+            Quay về
+        </button>
+    </a>
+</div>
+</div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".codeProvince").change(function (MaTinh) {
+                // lấy giá trị của option đang chọn
+                MaTinh = $(".codeProvince option:selected").val();
+                $.ajax({
+                    // get : truyền thẳng tham số vào url, còn post truyền theo cú pháp:  data : {key : value, key : value , n}
+                    // method
+                    type: "GET",
+                    // đường dẩn đếm hàm
+                    url: "/Admin/Branch/getHuyen/" + MaTinh,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "JSON",
+                    success: function (data) {
+                        // tạo một biến để lưu option vào
+                        var outPut = "";
+                        // Convert Json To Ojb
+                        var resultObj = $.parseJSON(data);
+                        // in ra số lần lặp lại của số lượng dòng huyện
+                        // khởi tạo một dòng value 0
+                        outPut += "<option value='0'>--------------- Chọn ---------------</option>";
+                        // chạy vòng lặp Object
+                        $.each(resultObj, function (key, objItem) {
+                            outPut += "<option value='" + objItem.CodeDistrict + "'>" + objItem.NameDistrict + "</option>";
+                        });
+                        // render html to id
+                        $("#codeDistrict").html(outPut);
+                    },
+                    error: function (err) {
+                        alert("Thất bại");
+                    }
+                });
+            });
+        });
+       
+    </script>
+}
+

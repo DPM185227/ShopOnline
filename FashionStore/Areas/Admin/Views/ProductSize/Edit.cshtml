@@ -1,0 +1,50 @@
+@model FashionStore.Models.ProductSize
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Sửa</h1>
+
+<h4>Size sản phẩm</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Idsize" />
+            <div class="form-group">
+                <label asp-for="SizeName" class="control-label"></label>
+                <input asp-for="SizeName" class="form-control" />
+                <span asp-validation-for="SizeName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Delta" class="control-label"></label>
+                <input asp-for="Delta" class="form-control" />
+                <span asp-validation-for="Delta" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuanityProduct" class="control-label"></label>
+                <input asp-for="QuanityProduct" class="form-control" />
+                <span asp-validation-for="QuanityProduct" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Idcolor" class="control-label"></label>
+                <select asp-for="Idcolor" class="form-control" asp-items="ViewBag.Idcolor"></select>
+                <span asp-validation-for="Idcolor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Quay về</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

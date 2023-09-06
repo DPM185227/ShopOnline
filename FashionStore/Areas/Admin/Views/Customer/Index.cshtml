@@ -1,0 +1,204 @@
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IEnumerable<FashionStore.Models.Customer>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+        background-color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh
+    }
+
+    h1 {
+        color: #484848;
+        font-size: 40px;
+        font-weight: bold;
+        font-family: 'Times New Roman';
+        letter-spacing: 7px;
+        cursor: pointer
+    }
+
+        h1 span {
+            transition: .5s linear
+        }
+
+        h1:hover span:nth-child(1) {
+            margin-right: 5px
+        }
+
+            h1:hover span:nth-child(1):after {
+                content: "";
+            }
+
+        h1:hover span:nth-child(2) {
+            margin-left: 20px
+        }
+
+        h1:hover span {
+            color: cornflowerblue;
+            text-shadow: 0 0 5px cornflowerblue, 0 0 10px cornflowerblue, 0 0 20px cornflowerblue;
+        }
+    /*made with ❤, by qpi65*/
+
+
+
+    .pagination-container {
+        display: flex;
+        flex: 1;
+    }
+
+    .pagination {
+        display: flex;
+        flex: 1;
+        list-style: none;
+        padding: 0;
+        gap: .625rem;
+    }
+
+    .page-item, .page-link {
+        height: 2rem;
+        width: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .PagedList-pageCountAndLocation {
+        justify-content: start;
+        order: -1;
+        flex: 1;
+        // expands the div to max available width
+    }
+</style>
+<h1><span>Quản lý khách hàng</span></h1>
+
+
+<p>
+    <a asp-action="Create">
+        <button type="button" class="btn btn-outline-info btn-icon-text">
+            Thêm mới
+            <i class="mdi mdi-gamepad-round btn-icon-prepend"></i>
+        </button>
+    </a>
+</p>
+<table class="table table-striped">
+    <thead class="table-info">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerPhone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CurstomerBirtday)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CurstomerIdentification)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerImage)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pass)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerAccountType)
+            </th>
+           @* <th>
+                @Html.DisplayNameFor(model => model.Authentication_code)
+            </th>*@
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerPhone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurstomerBirtday)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CurstomerIdentification)
+            </td>
+            <td>
+                    <img src="~/@item.CustomerImage" width="200" />
+            </td>
+           @* <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pass)
+            </td>*@
+            <td>
+                @if (item.CustomerAccountType == 0)
+                {
+                    <input type="checkbox" checked value="@item.IdCustomer" />
+                }
+                else
+                {
+                    <input type="checkbox" value="@item.IdCustomer" />
+                }
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Authentication_code)
+            </td>*@
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdCustomer">
+                        <button type="button" class="btn btn-outline-success btn-icon-text">
+                            Sửa
+                            <i class="mdi mdi-pencil-box-multiple btn-icon-append"></i>
+                        </button>
+                    </a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdCustomer">
+                        <button type="button" class="btn btn-outline-warning btn-icon-text">
+                            Xóa
+                            <i class="mdi mdi-delete-alert btn-icon-prepend"></i>
+                        </button>
+                    </a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@Html.PagedListPager((IPagedList) Model,page => Url.Action("Index", new {page}))
+
+@section Scripts{
+    <script type="text/javascript">
+        $("input[type=checkbox]").on('click', function () {
+            var idCustomer = $(this).val();
+            $.ajax({
+                type: "GET",
+                url: "/Admin/Customer/updateCheck/",
+                data: { idCustomer: idCustomer },
+                dataType: "Json",
+                success: function (result) {
+                    alert(result);
+                }
+            });
+        });
+    </script>
+}

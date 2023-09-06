@@ -1,0 +1,299 @@
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IEnumerable<FashionStore.Models.Product>
+
+@{
+    ViewData["Title"] = "Quan Ly San Pham";
+    var listColor = (List<ProductColor>)ViewBag.listColor;
+    var listSize = (List<ProductSize>)ViewBag.listSize;
+    var listTag = (List<Tag>)ViewBag.listTag;
+    var listPrecent = (List<SaleProductPercent>)ViewBag.listPrecent;
+}
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+        background-color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh
+    }
+
+    h1 {
+        color: #484848;
+        font-size: 40px;
+        font-weight: bold;
+        font-family: 'Times New Roman';
+        letter-spacing: 7px;
+        cursor: pointer
+    }
+
+        h1 span {
+            transition: .5s linear
+        }
+
+        h1:hover span:nth-child(1) {
+            margin-right: 5px
+        }
+
+            h1:hover span:nth-child(1):after {
+                content: "";
+            }
+
+        h1:hover span:nth-child(2) {
+            margin-left: 20px
+        }
+
+        h1:hover span {
+            color: cornflowerblue;
+            text-shadow: 0 0 5px cornflowerblue, 0 0 10px cornflowerblue, 0 0 20px cornflowerblue;
+        }
+    /*made with ❤, by qpi65*/
+
+
+
+    .pagination-container {
+        display: flex;
+        flex: 1;
+    }
+
+    .pagination {
+        display: flex;
+        flex: 1;
+        list-style: none;
+        padding: 0;
+        gap: .625rem;
+    }
+
+    .page-item, .page-link {
+        height: 2rem;
+        width: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .PagedList-pageCountAndLocation {
+        justify-content: start;
+        order: -1;
+        flex: 1;
+        // expands the div to max available width
+    }
+</style>
+<h1><span>Quản lý sản phẩm</span></h1>
+
+<p>
+    <a asp-action="Create">
+        <button type="button" class="btn btn-outline-info btn-icon-text">
+            Thêm mới
+            <i class="mdi mdi-gamepad-round btn-icon-prepend"></i>
+        </button>
+    </a>
+</p>
+<table class="table table-striped">
+    <thead class="table-info">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductNameSlug)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.IdBranchNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdCategoryNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdStaffNavigation)
+            </th>*@
+            <th>Màu</th>
+            <th>Size</th>
+            <th>Tag</th>
+            <th>Sale</th>
+            <th>Hiển thị</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @item.ProductPrice.ToString("N0") <span>VNĐ</span>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductNameSlug)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.IdBranchNavigation.IdBranch)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdCategoryNavigation.IdCategory)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdStaffNavigation.IdStaff)
+            </td>*@
+            <td>
+                    @{
+                        var sizeItem = listSize.Where(m => m.IdcolorNavigation.IdProduct == item.IdProduct).ToList();
+                        int countColor, countSize, countTag, countPrecent;
+                        if(listColor == null)
+                        {
+                            countColor = 0;
+                        }
+                        else
+                        {
+                            countColor = listColor.Where(m => m.IdProduct == item.IdProduct).Count();
+
+                        }
+                        if (sizeItem.Count() < 1)
+                        {
+                            countSize = 0;
+                        }
+                        else
+                        {
+                            if (sizeItem.Count() > 0) countSize = sizeItem.Count();
+                            else countSize = 0;
+                        }
+
+                        if(listTag == null)
+                        {
+                            countTag = 0;
+                        }
+                        else
+                        {
+                            countTag = listTag.Where(m => m.IdProduct == item.IdProduct).Count();
+                        }
+
+                        if(listPrecent.Count() < 1)
+                        {
+                            countPrecent = 0;
+                        }
+                        else
+                        {
+                            countPrecent = listPrecent.Where(m => m.IdProduct == item.IdProduct).Count();
+                        }
+                    }
+                    <a asp-action="Index" asp-controller="ProductColor" asp-route-id="@item.IdProduct">
+                        <button type="button" class="btn btn-outline-danger btn-icon-text">
+                        @countColor
+                            <i class="mdi mdi-format-paint btn-icon-prepend"></i>
+                        </button>
+                    </a>
+            </td>
+
+                <td>
+                    <a asp-action="Index" asp-controller="ProductSize" asp-route-id="@item.IdProduct">
+                        <button type="button" class="btn btn-outline-danger btn-icon-text">
+                        @countSize
+                            <i class="mdi mdi-content-cut btn-icon-prepend"></i>
+                        </button>
+                    </a>
+                </td>
+                <td>
+                    <a asp-action="Index" asp-controller="Tag" asp-route-id="@item.IdProduct">
+                        <button type="button" class="btn btn-outline-danger btn-icon-text">
+                        @countTag
+                            <i class="mdi mdi-tag-multiple btn-icon-prepend"></i>
+                        </button>
+                    </a>
+                </td>
+
+                <td>
+                    <a asp-action="Index" asp-controller="SaleProductPercent" asp-route-id="@item.IdProduct">
+                        <button type="button" class="btn btn-outline-danger btn-icon-text">
+                            @countPrecent
+                            <i class=" mdi mdi-margin"></i>
+                        </button>
+                    </a>
+                </td>
+
+                <td id="viewFrontEnd">
+                    @if (item.ViewInFrontEnd == 0)
+                    {
+                        <input type="checkbox" checked value="@item.IdProduct" />
+                    }
+                    else
+                    {
+                        <input type="checkbox" value="@item.IdProduct" />
+                    }
+                </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdProduct">
+                        <button type="button" class="btn btn-outline-success btn-icon-text">
+                            Sửa
+                            <i class="mdi mdi-pencil-box-multiple btn-icon-append"></i>
+                        </button>
+                    </a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdProduct">
+                        <button type="button" class="btn btn-outline-warning btn-icon-text">
+                            Xóa
+                            <i class="mdi mdi-delete-alert btn-icon-prepend"></i>
+                        </button>
+                    </a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@Html.PagedListPager((IPagedList) Model,page => Url.Action("Index", new {page}))
+
+<script type="text/javascript">
+    /*
+    // on load fisrt
+    window.onload = function () {
+        // hidden element
+        $("#deleteItemSelect").hide();
+        $("#showResult").hide();
+    };
+    //// delete all
+    //$('#selectAllItem').click(function () {
+    //    // get element use id checkAll
+    //    // this = element id checkAll
+    //    if ($(this).prop('checked')) {
+    //        // change text button
+    //        $("#deleteItemSelect").text("Xóa tất cả");
+    //        // show button
+    //        $("#deleteItemSelect").show('slow');
+    //        // bắt sự kiện click cho button
+    //        $("#deleteItemSelect").on('click', function () {
+    //            $.ajax({
+    //                type: "Delete",
+    //                url: "/Admin/ProductType/deleteAll",
+    //                dataType: "Json",
+    //                contentType: "application/json; charset=utf-8",
+    //                success: function (result) {
+    //                    // reload lại trang
+    //                    window.setTimeout('location.reload()'); //Reloads after three seconds
+    //                    $("#reusltHandle").text(result);
+    //                    $("#showResult").show('slow');
+    //                }
+    //            });
+    //        });
+    //    } else {
+    //        $("#deleteItemSelect").hide('slow');
+    //    }
+    //});
+    */
+    // update click checkbox
+    $('#viewFrontEnd > input[type="checkbox"]').click(function () {
+        var idProduct = $(this).val();
+        $.ajax({
+            type: "GET",
+            url: "/Admin/Product/updateCheck/",
+            data: { idProduct: idProduct },
+            dataType: "Json",
+            success: function (result) {
+                alert(result);
+            }
+        });
+    });
+</script>

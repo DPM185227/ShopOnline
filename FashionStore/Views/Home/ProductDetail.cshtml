@@ -1,0 +1,638 @@
+@using Microsoft.AspNetCore.Http;
+@using System.IO;
+@model FashionStore.Models.Product
+@{
+    var listColorOfProduct = (List<ProductColor>)ViewBag.listColor;
+    var listProductCateogry = (List<Product>)ViewBag.listProduct;
+    var listTag = (List<Tag>)ViewBag.Tag;
+
+    var listComment = (List<Comment>)ViewBag.commentList;
+    var listOrder = (List<OrderDetail>)ViewBag.checkCommentOrder;
+    var listRep = (List<CommentRep>)ViewBag.commentRep;
+    var Precent = (SaleProductPercent)ViewBag.Precent;
+}
+
+<!-- detail -->
+<section class="sec-product-detail bg0 p-t-65 p-b-60" style="margin-top:20px;">
+    <div class="container">
+        <div class="row">
+            <!--img-->
+            <div class="col-md-6 col-lg-7 p-b-30">
+                <div class="wrap-pic-w pos-relative">
+                    <div class="p-l-25 p-r-30 p-lr-0-lg">
+                        <div class="p-l-25 p-r-30 p-lr-0-lg">
+                            <div class="wrap-slick3 flex-sb flex-w">
+                                @{
+                                    var colorInfo = listColorOfProduct.Where(m => m.IdProduct == Model.IdProduct && m.Active == 0).FirstOrDefault();
+                                }
+                                @if (colorInfo != null)
+                                {
+                                    <img src="~/@colorInfo.ImageProductColor" alt="IMG-PRODUCT" id="imgProduct" />
+                                }
+                                else
+                                {
+                                    <img src="~/Storage/NoImage.png" alt="IMG-PRODUCT">
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!---->
+            <div class="col-md-6 col-lg-5 p-b-30">
+                <div class="p-r-50 p-t-5 p-lr-0-lg">
+                    <h4 class="mtext-105 cl2 js-name-detail p-b-14">
+                        @Model.ProductName
+                    </h4>
+                    @{
+                        int priceSale = Precent != null ? Model.ProductPrice - (Model.ProductPrice / Precent.SalePercent) : Model.ProductPrice ;
+                    }
+
+                    <span class="mtext-106 cl2" id="productPrice" data-productPrice="@priceSale">
+                        @priceSale.ToString("N0") <u>VNĐ</u>
+                    </span>
+                    <!--  -->
+                    <div class="p-t-33">
+                        <!--tag -->
+                        <div class="flex-w flex-r-m p-b-10">
+                            <div class="size-203 flex-c-m respon6">
+                                Tag
+                            </div>
+
+                            <div class="size-204 respon6-next">
+                                <div class="rs1-select2 bor8 bg0" style="border: 0px none white;">
+                                    <div class="row">
+                                        @if (listTag.Count() > 0)
+                                        {
+                                            foreach (var itemTag in listTag)
+                                            {
+                                                <a @*asp-controller="Home" asp-action="ViewTag" asp-route-nameTag="@itemTag.NameTag"*@ class="col-md-3 flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+                                                    @itemTag.NameTag
+                                                </a>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span>Sản phẩm chưa có thẻ nào</span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--color-->
+                        <div class="flex-w flex-r-m p-b-10">
+                            <div class="size-203 flex-c-m respon6">
+                                Màu sắc
+                            </div>
+
+                            <div class="size-204 respon6-next">
+                                <div class="rs1-select2 bor8 bg0" style="border: 0px none white;" id="colorList">
+                                    @foreach (var itemColor in listColorOfProduct)
+                                    {
+                                        <input value="@itemColor.Idcolor" type="image" data-idProduct="@Model.IdProduct" data-idColor="@itemColor.Idcolor" src="~/@itemColor.ImageColor" width="30" height="30" style="display:inline;border-radius:50px;" />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <!-- size-->
+                        <div class="flex-w flex-r-m p-b-10">
+                            <div class="size-203 flex-c-m respon6">
+                                Size
+                            </div>
+
+                            <div class="size-204 respon6-next">
+                                <div class="rs1-select2 bor8 bg0" style="border: 0px none white;" id="sizeList">
+                                    <select id="selectSize" style="height:30px;">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex-w flex-r-m p-b-10">
+                            <div class="size-204 flex-w flex-m respon6-next">
+                                <div class="wrap-num-product flex-w m-r-20 m-tb-10">
+                                    <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                        <i class="fs-16 zmdi zmdi-minus" id="btnGiam"></i>
+                                    </div>
+
+                                    <input class="mtext-104 cl3 txt-center num-product" type="number" id="num-product" value="1">
+
+                                    <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                        <i class="fs-16 zmdi zmdi-plus" id="btnTang"></i>
+                                    </div>
+                                </div>
+
+                                <button id="btnAddToCart" data-idColor="" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+                                    Thêm vào giỏ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--  -->
+                    <div class="flex-w flex-m p-t-40 respon7">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span><b>TÌM CHI NHÁNH CÒN HÀNG</b></span>
+                            </div>
+                            <div class="col-md-5">
+                                Tỉnh: <select id="codeProvince" asp-items="@ViewBag.listCodeProvince" style="height:25px;">
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+                                Huyện: <select id="codeDistrict" style="height:25px;">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="listBranch" class="mt-3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bor10 m-t-50 p-t-43 p-b-40">
+            <!-- Tab01 -->
+            <div class="tab01">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item p-b-10">
+                        <a class="nav-link active" data-toggle="tab" href="#description" role="tab">Description</a>
+                    </li>
+
+                    <li class="nav-item p-b-10">
+                        <a class="nav-link" data-toggle="tab" href="#information" role="tab">Additional information</a>
+                    </li>
+
+                    <li class="nav-item p-b-10">
+                        <a class="nav-link" data-toggle="tab" href="#reviews" role="tab">Reviews @listComment.Count()</a>
+                    </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content p-t-43">
+                    <!-- - -->
+                    <div class="tab-pane fade show active" id="description" role="tabpanel">
+                        <div class="how-pos2 p-lr-15-md">
+                            <p class="stext-102 cl6">
+                                @Html.Raw(Model.ProductDescription)
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- - -->
+                    <div class="tab-pane fade" id="information" role="tabpanel">
+                        <div class="row">
+                            <div class="col-sm-10 col-md-8 col-lg-6 m-lr-auto">
+                                <ul class="p-lr-28 p-lr-15-sm">
+                                    <li class="flex-w flex-t p-b-7">
+                                        <span class="stext-102 cl3 size-205">
+                                            Weight
+                                        </span>
+
+                                        <span class="stext-102 cl6 size-206">
+                                            0.79 kg
+                                        </span>
+                                    </li>
+
+                                    <li class="flex-w flex-t p-b-7">
+                                        <span class="stext-102 cl3 size-205">
+                                            Dimensions
+                                        </span>
+
+                                        <span class="stext-102 cl6 size-206">
+                                            110 x 33 x 100 cm
+                                        </span>
+                                    </li>
+
+                                    <li class="flex-w flex-t p-b-7">
+                                        <span class="stext-102 cl3 size-205">
+                                            Materials
+                                        </span>
+
+                                        <span class="stext-102 cl6 size-206">
+                                            60% cotton
+                                        </span>
+                                    </li>
+
+                                    <li class="flex-w flex-t p-b-7">
+                                        <span class="stext-102 cl3 size-205">
+                                            Color
+                                        </span>
+
+                                        <span class="stext-102 cl6 size-206">
+                                            Black, Blue, Grey, Green, Red, White
+                                        </span>
+                                    </li>
+
+                                    <li class="flex-w flex-t p-b-7">
+                                        <span class="stext-102 cl3 size-205">
+                                            Size
+                                        </span>
+
+                                        <span class="stext-102 cl6 size-206">
+                                            XL, L, M, S
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- - -->
+                    <div class="tab-pane fade" id="reviews" role="tabpanel">
+                        <div class="row">
+                            <div class="col-sm-10 col-md-8 col-lg-6 m-lr-auto">
+                                <div class="p-b-30 m-lr-15-sm" id="commentList">
+                                    <!-- Review -->
+                                    @if (listComment.Count() > 0)
+                                    {
+                                        foreach (var itemComment in listComment.Where(m => m.StatusComment == 0))
+                                        {
+                                            <div class="flex-w flex-t p-b-68">
+                                                <div class="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6">
+                                                    <img src="~/@itemComment.IdCustomerNavigation.CustomerImage" alt="AVATAR">
+                                                </div>
+
+                                                <div class="size-207">
+                                                    @{
+                                                        var checkOrder = listOrder.Where(m => m.IdProduct == @Model.IdProduct && m.IdorderNavigation.IdCustomer == itemComment.IdCustomer).FirstOrDefault();
+                                                    }
+                                                    @if (checkOrder != null)
+                                                    {
+                                                        <span style="color:red;font-weight:bold;font-size:15px;">Khách hàng tin cậy</span>
+                                                    }
+                                                    <p>
+                                                        <span style="font-weight:bold;font-size:18px;">@itemComment.IdCustomerNavigation.CustomerName</span>
+                                                    </p>
+                                                    <p class="stext-102 cl6">
+                                                        @itemComment.Content
+                                                    </p>
+                                                    <p>
+                                                        @itemComment.CreateAt
+                                                    </p>
+                                                    @if (itemComment.Folder != null)
+                                                    {
+                                                        foreach (var item in Directory.GetFiles(itemComment.Folder))
+                                                        {
+                                                            <img src="~/@item.Replace("wwwroot/","")" width="100" />
+                                                        }
+                                                    }
+                                                    @if (itemComment.IdCustomer == Context.Session.GetString("_idCustomer"))
+                                                    {
+                                                        <p>
+                                                            <a class="btn btn-danger mt-2" asp-action="DeleteComment" asp-controller="Customer"
+                                                   asp-route-idComment="@itemComment.IdComment" asp-route-idProduct="@Model.IdProduct">Xóa bình luận</a>
+                                                        </p>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <!--comment rep-->
+                                            if (listRep.Count() > 0)
+                                            {
+                                                foreach (var repItem in listRep.Where(m => m.IdCommentNavigation.StatusComment == 0))
+                                                {
+                                                    <div class="flex-w flex-t p-b-68" style="margin-left:65px; margin-top:-40px;">
+                                                        <div class="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6">
+                                                            <span>
+                                                                <img src="~/@repItem.IDStaffNavigation.StaffImage" alt="AVATAR">
+                                                            </span>
+                                                        </div>
+
+                                                        <div class="size-207">
+                                                            <p>
+                                                                <span style="font-weight:bold;font-size:18px;">@repItem.IDStaffNavigation.StaffName &#x2713;</span>
+                                                            </p>
+                                                            <p class="stext-102 cl6">
+                                                                @repItem.Content
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span>Hiện tại sản phẩm chưa có bình luận nào</span>
+                                    }
+                                    @if (Context.Session.GetString("_idCustomer") != null)
+                                    {
+                                        <!-- Add review -->
+                                        <form class="w-full" asp-controller="Customer" asp-action="AddComment" method="post" enctype="multipart/form-data">
+                                            <h5 class="mtext-108 cl2 p-b-7">
+                                                THÊM BÌNH LUẬN CỦA BẠN
+                                            </h5>
+
+                                            <input type="hidden" value="@Model.IdProduct" name="idProduct" />
+
+                                            <div class="row p-b-25">
+                                                <div class="col-12 p-b-5">
+                                                    <label class="stext-102 cl3" for="review">Bình luận của bạn</label>
+                                                    <textarea class="size-110 bor8 stext-102 cl2 p-lr-20 p-tb-10" id="review" name="content"></textarea>
+                                                </div>
+
+                                                <div class="col-sm-6 p-b-5" style="border:0px solid;">
+                                                    <label class="stext-102 cl3" for="name">Hình ảnh / Video</label>
+                                                    <input class="size-111 stext-102 cl2 p-lr-20" id="name" type="file" multiple name="fileUpload">
+                                                </div>
+                                            </div>
+
+                                            <button class="flex-c-m stext-101 cl0 size-112 bg7 bor11 hov-btn3 p-lr-15 trans-04 m-b-10">
+                                                Đăng tải
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="LoginCustomer" asp-controller="Customer" class="btn btn-primary">Đăng nhập</a>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg6 flex-c-m flex-w size-302 m-t-73 p-tb-15">
+        <span class="stext-107 cl6 p-lr-25">
+            SKU: JAK-01
+        </span>
+
+        <span class="stext-107 cl6 p-lr-25">
+            Categories: Jacket, Men
+        </span>
+    </div>
+</section>
+<!-- sản phẩm liên quan-->
+<section class="sec-relate-product bg0 p-t-45 p-b-105">
+    <div class="container">
+        <div class="p-b-45">
+            <h3 class="ltext-106 cl5 txt-center">
+                SẢN PHẨM TƯƠNG TỰ
+            </h3>
+        </div>
+
+        <!-- Slide2 -->
+        <div class="wrap-slick2">
+            <div class="slick2 slick-initialized slick-slider">
+                <div class="slick-list draggable">
+                    <div class="slick-track" style="opacity: 1; width: 1500px; transform: translate3d(0px, 0px, 0px);">
+                        <div class="row">
+                            <!-- Block2 -->
+                            @if (listProductCateogry.Count() > 0)
+                            {
+                                foreach (var itemProduct in listProductCateogry.Where(m => m.IdProduct != Model.IdProduct))
+                                {
+                                    var productColor = listColorOfProduct.Where(m => m.IdProduct == itemProduct.IdProduct && m.Active == 0).FirstOrDefault();
+                                    <div class="col-md-3">
+                                        <div class="block2-pic hov-img0">
+                                            @if (productColor != null)
+                                            {
+                                                <img src="~/@productColor.ImageProductColor" alt="IMG-PRODUCT">
+                                            }
+                                            else
+                                            {
+                                                <img src="~/Storage/NoImage.png" alt="IMG-PRODUCT">
+                                            }
+                                            <a asp-controller="Home" asp-action="ProductDetail" asp-route-idProduct="@itemProduct.IdProduct" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1" tabindex="0">
+                                                Xem chi tiết
+                                            </a>
+                                        </div>
+
+                                        <div class="block2-txt flex-w flex-t p-t-14">
+                                            <div class="block2-txt-child1 flex-col-l ">
+                                                <a asp-controller="Home" asp-action="ProductDetail" asp-route-idProduct="@itemProduct.IdProduct" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6" tabindex="0">
+                                                    @itemProduct.ProductName
+                                                </a>
+
+                                                <span class="stext-105 cl3">
+                                                    @itemProduct.ProductPrice
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <span>Hiện tại không có sản phẩm nào</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!---script--->
+@section Scripts{
+    <script type="text/javascript">
+
+        window.onload = function () {
+            $('#selectSize').hide();
+            $('#listBranch').hide();
+            $('#codeDistrict').hide();
+        };
+
+
+        $('#colorList > input[type="image"]').on('click', function () {
+            var idColor = $(this).attr('data-idColor');
+            console.log(idColor);
+            // cập nhật giá trị: khi chuyển màu khác reset lại giá của màu đó
+            // reset all css in default
+            $("#colorList > input").css({ 'border': '0px solid red', 'opacity': '0.5' });
+            $.ajax({
+                type: "GET",
+                url: "/Home/getSize/",
+                data: { idColor: idColor },
+                dataType: "Json",
+                success: function (reponse) {
+                    var outPut = "";
+                    var objectSize = $.parseJSON(reponse);
+                    outPut += "<option value=0>-----------Chọn-----------</option>";
+                    $.each(objectSize, function (key, item) {
+                        if (item !== null) {
+                            outPut += '<option value=' + item["idSize"] + '>' + item["nameSize"] + '</option>';
+                            if (item["stringPathColor"] !== null) {
+                                $('#imgProduct').attr('src', '/' + item["stringPathColor"]);
+                                $("#productPrice").text(convertMoney(parseInt(item["productPrice"])).toString());
+                            }
+                            else {
+                                $('#imgProduct').attr('src', '/Storage/NoImage.png');
+                            }
+                        }
+                        else {
+                            $('#imgProduct').attr('src', '/Storage/NoImage.png');
+                        }
+
+                    });
+                    // append
+                    //$('#selectSize').attr('disabled','enabled');
+                    $('#colorList > input[data-idColor = ' + idColor + ']').css({ 'border': '2px solid red', 'opacity': '1' });
+                    $("#selectSize").html(outPut);
+                    $('#selectSize').show('slow');
+
+                    // set data color in click call add cart
+                    $('#btnAddToCart').attr('data-idColor', idColor);
+                },
+                error: function (xhr) {
+                    alert('Error: ' + xhr.statusText);
+                }
+            });
+        });
+
+
+        // change size update price product
+        $('#selectSize').change(function () {
+            // get value option in select
+            var idSize = $('#selectSize option:selected').val();
+            // nhiều đối tượng trùng thì đặt id cho thẻ cần lấy
+            var getPrice = $("#productPrice").attr('data-productPrice');
+            $.ajax({
+                type: "GET",
+                url: "/Home/getInfoSize/",
+                data: { idSize: idSize },
+                dataType: "Json",
+                success: function (reponse) {
+                    // cộng giá trị của sản phẩm với size vừa chọn
+                    var sumDelta = parseInt(reponse) + parseInt(getPrice);
+                    // cập nhật giao diện
+                    $("#productPrice").text(convertMoney(sumDelta).toString());
+                }
+            });
+        });
+
+        function convertMoney(amt) {
+            return amt.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+        };
+
+
+        $('#btnGiam').click(function () {
+            var getNum = parseInt($('#num-product').val());
+            console.log(getNum--);
+            if (getNum < 1) {
+                sweetAlert("Vui lòng chọn số lượng lớn hơn bằng 1");
+            }
+            else {
+                $('#num-product').attr('value', getNum);
+            }
+        });
+
+        $('#btnTang').click(function () {
+            var getNum = parseInt($('#num-product').val());
+            getNum++;
+            if (getNum < 1) {
+                sweetAlert("Vui lòng chọn số lượng lớn hơn bằng 1");
+            }
+            else {
+                $('#num-product').attr('value', getNum);
+            }
+        });
+
+        // add to cart
+        $('#btnAddToCart').click(function () {
+            var productColor = $(this).attr('data-idColor');
+            var productId = $("#colorList > input").attr('data-idProduct');
+            var productSize = $('#selectSize option:selected').val();
+            var quantityBuy = parseInt($('#num-product').val());
+
+            if (productSize === undefined) {
+                alert("Vui lòng chọn màu và kích cở của sản phẩm");
+                return;
+            }
+            else if (productSize == 0) {
+                alert("Vui lòng chọn kích cở sản phẩm");
+                return;
+            }
+            else {
+                $.ajax({
+                    type: "GET",
+                    url: "/Cart/AddToCart/",
+                    data: { productColor: productColor, productId: productId, productSize: productSize, quantityBuy: quantityBuy },
+                    dataType: "JSON",
+                    success: function (reponse) {
+                        if (reponse.checkLogin) {
+                            sweetAlert(reponse.result);
+                        }
+                        else window.location = reponse.result;
+                    }
+                });
+            }
+        });
+
+
+        // select
+        $('#codeProvince').on('change',function(){
+            var idProvince = $('#codeProvince option:selected').val();
+            console.log(idProvince);
+            $.ajax({
+                type: "POST",
+                url: "/Cart/getDistrict/",
+                data: { provinceID: idProvince },
+                dataType: "JSON",
+                success: function (result) {
+                    var outPut = '';
+                    var districtObj = $.parseJSON(result);
+                    outPut += '<option value=0>-----Chọn-----</option>';
+                    $.each(districtObj, function (key, itemObj) {
+                        outPut += '<option value=' + itemObj.idDistrict + '>' + itemObj.nameDistrict + '</option>';
+                    });
+                    $('#codeDistrict').html(outPut);
+                    $('#codeDistrict').show();
+                }
+            });
+        });
+        // get brach
+        $('#codeDistrict').on('change', function(){
+            var codeProvince = $('#codeProvince option:selected').val();
+            var codeDistrict = $('#codeDistrict option:selected').val();
+            var idProduct = "@Model.IdProduct";
+            if(codeDistrict > 0)
+            {
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/getBranch/",
+                    data: {idProvince: codeProvince, idDistrict:codeDistrict, idProduct: idProduct },
+                    dataType: "JSON",
+                    success: function (result) {
+                        console.log(result);
+                        if(result !== null)
+                        {
+                            var objData = $.parseJSON(result.data);
+                            if(objData.type === 0)
+                            {
+                                var outPut = '<h5><b>CHI NHÁNH HIỆN CÒN HÀNG</b></h5>';
+                            }
+                            else
+                            {
+                                var outPut = '<h5><b>GỢI Ý CHI NHÁNH HIỆN CÒN HÀNG TRONG TỈNH CỦA BẠN</b></h5>';
+                            }
+
+                            $.each(objData, function(key, item){
+                                outPut += '<div class="row">';
+                                outPut += '<div class="col-md-6">';
+                                outPut += '<span><b>' + item.nameBranch + '</b></span>';
+                                outPut += '</div>';
+                                outPut += '<div class="col-md-6">';
+                                outPut += '<a class="btn btn-primary" href="' + item.locationMap + '">Xem đường đi</a>';
+                                outPut += '</div>';
+                            });
+                            $('#listBranch').show();
+                            $('#listBranch').html(outPut);
+                        }
+                        else
+                        {
+                            sweetAlert("Hiện tại vị trí này chưa có cửa hàng hoặc đã hết hàng");
+                        }
+                    }
+                });
+            }
+        });
+
+    </script>
+}

@@ -1,0 +1,179 @@
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IEnumerable<FashionStore.Models.OrderDetail>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    var orderInfo = (Order)ViewBag.orderInfo;
+}
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+        background-color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh
+    }
+
+    h1 {
+        color: #484848;
+        font-size: 40px;
+        font-weight: bold;
+        font-family: 'Times New Roman';
+        letter-spacing: 7px;
+        cursor: pointer
+    }
+
+        h1 span {
+            transition: .5s linear
+        }
+
+        h1:hover span:nth-child(1) {
+            margin-right: 5px
+        }
+
+            h1:hover span:nth-child(1):after {
+                content: "";
+            }
+
+        h1:hover span:nth-child(2) {
+            margin-left: 20px
+        }
+
+        h1:hover span {
+            color: cornflowerblue;
+            text-shadow: 0 0 5px cornflowerblue, 0 0 10px cornflowerblue, 0 0 20px cornflowerblue;
+        }
+    /*made with ❤, by qpi65*/
+
+
+    .pagination-container {
+        display: flex;
+        flex: 1;
+    }
+
+    .pagination {
+        display: flex;
+        flex: 1;
+        list-style: none;
+        padding: 0;
+        gap: .625rem;
+    }
+
+    .page-item, .page-link {
+        height: 2rem;
+        width: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .PagedList-pageCountAndLocation {
+        justify-content: start;
+        order: -1;
+        flex: 1;
+        // expands the div to max available width
+    }
+</style>
+<div id="elementPrint">
+    <p style="text-align:center;font-size:25px;color:red;font-weight:bold;">CỬA HÀNG FASHION STORE</p>
+    <p>
+        <b>Họ và tên: </b>@orderInfo.FullName
+    </p>
+    <p>
+        <b>Số điện thoại: </b>@orderInfo.Phone
+    </p>
+    <p>
+        <b>Địa chỉ giao hàng: </b>@orderInfo.AddressSend
+    </p>
+    <p>
+        <b>Phí vận chuyển : </b>@orderInfo.ShippingPrice.Value.ToString("N0") <span>VND</span>
+    </p>
+    <p>
+        <b>Ngày mua: </b>@orderInfo.CreateAt
+    </p>
+    <p>
+        <b>Tổng tiền: </b>@orderInfo.TotalAll.Value.ToString("N0") <span>VND</span>
+    </p>
+    <p>
+        
+            <button type="button" class="btn btn-success btn-rounded waves-effect waves-light">
+                In
+                <span class="btn-label btn-label-right">
+                <i class="mdi mdi-printer"></i>
+                </span>
+            </button>
+    </p>
+    @if (Model.Count() > 0)
+    {
+        <table class="table table-striped">
+            <thead class="table-info">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IdProductNavigation)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IdcolorNavigation)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IdsizeNavigation)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.QuantityBuy)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Total)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdProductNavigation.ProductName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdcolorNavigation.ColorName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdsizeNavigation.SizeName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.QuantityBuy)
+                        </td>
+                        <td>
+                            @item.Total.Value.ToString("N0") <span>VND</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <span>Hiện tại không có thông tin</span>
+    }
+</div>
+@Html.PagedListPager((IPagedList) Model,page => Url.Action("Index", new {page}))
+
+@section Scripts{
+    <script type="text/javascript">
+        $('button').click(function () {
+            $(this).hide();
+            var printContents = document.getElementById('elementPrint').innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+            $(this).show();
+        });
+    </script>
+}
+

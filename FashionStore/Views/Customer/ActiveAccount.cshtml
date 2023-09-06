@@ -1,0 +1,17 @@
+@{
+    ViewData["Title"] = "Kích hoạt tài khoản";
+    Layout = null;
+}
+<div style="margin:auto;">
+    <form asp-action="ActiveAccount" asp-controller="Customer" method="post"> 
+        <div class="form-group">
+            <label class="control-label">Mã code</label>
+            <input name="code" class="form-control" />
+            @if (ViewData["Error"] != null)
+            {
+                <span>@ViewData["Error"].ToString()</span>
+            }
+            <input type="submit" value="Xác thực"/>
+        </div>
+    </form>
+</div>

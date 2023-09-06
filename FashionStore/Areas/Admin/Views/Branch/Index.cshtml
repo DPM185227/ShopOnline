@@ -1,0 +1,274 @@
+@model IEnumerable<FashionStore.Models.Branch>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Web.Common;
+@{
+    ViewData["Title"] = "Quản lý trang Chi Nhánh";
+}
+@*<style>
+    h1 {
+        color: white;
+        text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+    }
+</style>*@
+<style>
+   
+     body {
+        padding: 0;
+        margin: 0;
+        background-color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh
+    }
+
+    h1 {
+        color: #484848;
+        font-size: 40px;
+        font-weight: bold;
+        font-family: 'Times New Roman';
+        letter-spacing: 7px;
+        cursor: pointer
+    }
+
+        h1 span {
+            transition: .5s linear
+        }
+
+        h1:hover span:nth-child(1) {
+            margin-right: 5px
+        }
+
+            h1:hover span:nth-child(1):after {
+                content: "";
+            }
+
+        h1:hover span:nth-child(2) {
+            margin-left: 20px
+        }
+
+        h1:hover span {
+            color: cornflowerblue;
+            text-shadow: 0 0 5px cornflowerblue, 0 0 10px cornflowerblue, 0 0 20px cornflowerblue;
+        }
+    /*made with ❤, by qpi65*/
+
+
+    .pagination-container {
+        display: flex;
+        flex: 1;
+    }
+
+    .pagination {
+        display: flex;
+        flex: 1;
+        list-style: none;
+        padding: 0;
+        gap: .625rem;
+    }
+
+    .page-item, .page-link {
+        height: 2rem;
+        width: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .PagedList-pageCountAndLocation {
+        justify-content: start;
+        order: -1;
+        flex: 1;
+        // expands the div to max available width
+    }
+
+</style>
+
+
+<h1><span>Quản lý chi nhánh</span></h1>
+<div class="alert alert-warning alert-dismissible fade show" role="alert" id="showResult">
+    <strong>Tình trạng!!!</strong><h5 id="reusltHandle"></h5>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<p>
+    <a asp-action="Create">
+        <button type="button" class="btn btn-outline-info btn-icon-text">
+            Thêm mới
+            <i class="mdi mdi-gamepad-round btn-icon-prepend"></i>
+        </button>
+    </a>
+ 
+    <a class="btn btn-outline-warning" id="deleteItemSelect"></a>
+</p>
+<table class="table table-striped" id="tbData">
+    <thead class="table-info">
+        <tr>
+            <th>
+                <input type="checkbox" id="selectAllItem" />
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LocationName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LoactionMap)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneBrand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CodeDistrictNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CodeProvinceNavigation)
+            </th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <input type="checkbox" id="checkItem"/>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LocationName)
+            </td>
+            <td>
+                    <a href="@item.LoactionMap">
+                        <button type="button" class="btn btn-outline-danger btn-icon-text">
+                            Xem map
+                            <i class="mdi mdi-map-marker-radius btn-icon-prepend"></i>
+                        </button>
+                    </a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneBrand)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CodeDistrictNavigation.NameDistrict)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CodeProvinceNavigation.NameProvince)
+            </td>
+            <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdBranch">
+                        <button type="button" class="btn btn-outline-success btn-icon-text">
+                            Sửa
+                            <i class="mdi mdi-pencil-box-multiple btn-icon-append"></i>
+                        </button>
+                    </a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdBranch" id="deleteData">
+                        <button type="button" class="btn btn-outline-warning btn-icon-text">
+                            Xóa
+                            <i class="mdi mdi-delete-alert btn-icon-prepend"></i>
+                        </button>
+                    </a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@Html.PagedListPager((IPagedList) Model,page => Url.Action("Index", new {page}))
+
+
+
+
+
+
+<script type="text/javascript">
+    window.onload = function () {
+        // hidden element
+        $("#deleteItemSelect").hide();
+        $("#showResult").hide();
+
+        LoadData();
+    };
+
+    /*
+    function LoadData(){
+        $.ajax({
+            type: "GET",
+            url: "/Admin/Branch/getDanhSach",
+            dataType: "Json",
+            contentType: "application/x-www-form-urlencoded;charset=utf-8",
+            success: function(data){
+                if(data !== null)
+                {
+                    var outPut = '';
+                    var dataObj = $.parseJSON(data);
+                    $.each(dataObj, function(key, item){
+                        outPut += '<tr>';
+                        outPut += '<td>  <input type="checkbox" id="checkItem"/> </td>';
+                        outPut += '<td>' + item.locationName + '</td>';
+                        outPut += '<td>' + item.phoneBranch + '</td>';
+                        outPut += '<td>' + item.nameDistrict + '</td>';
+                        outPut += '<td>' + item.nameProvince + '</td>';
+                        outPut += '<td>' + item.nameProvince + '</td>';
+                        outPut += '<td>;
+                        // btn sửa
+                        outPut += '<a asp-action="Edit" asp-route-id="' + item.idBranch + '">';
+                        outPut += '<button type="button" class="btn btn-outline-success btn-icon-text"> Sửa ';
+                        outPut += '< i class="mdi mdi-pencil-box-multiple btn-icon-append" > </i>';
+                        outPut += '        < /button>'
+                        outPut += '</a>';
+                        outPut_+ ='</td>';
+                        outPut += '</tr>';
+                    });
+
+                    $('#tbData').append(outPut);
+                }
+            }
+        });
+    }*/
+
+    // delete all
+    $('#selectAllItem').change(function () {
+        // get element use id checkAll
+        // this = element id checkAll
+        if ($('#selectAllItem').prop('checked')) {
+            // change text button
+            $("#deleteItemSelect").text("Xóa tất cả");
+            //check all checkbox in table
+            $(".checkItem").prop("checked", $("#checkItem").prop("checked"));
+            // show button
+            $("#deleteItemSelect").show('slow');
+            // bắt sự kiện click cho button
+            $("#deleteItemSelect").on('click',function(){
+                $.ajax({
+                    type: "Post",
+                    url: "/Admin/Branch/deleteAll",
+                    dataType: "Json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        // reload lại trang
+                        window.setTimeout('location.reload()', 3000); //Reloads after three seconds
+                        $("#reusltHandle").text(result);
+                        $("#showResult").show('slow');
+                    }
+                });
+            });
+        } else {
+            $("#deleteItemSelect").hide('slow');
+            $('input[type="checkbox"]').prop("checked", false);
+        }
+    });
+    // select item in table
+    $('#checkItem').change(function () {
+        // get element use id checkAll
+        // this = element id checkAll
+        if ($('#checkItem').prop('checked')) {
+            // change text button
+            $("#deleteItemSelect").text("Xóa");
+            //check all checkbox in table
+            $(".checkItem").prop("checked", $("#checkItem").prop("checked"));
+            // show button
+            $("#deleteItemSelect").show('slow');
+
+        } else {
+            $("#deleteItemSelect").hide('slow');
+            $('input[type="checkbox"]').prop("checked", false);
+        }
+    });
+</script>

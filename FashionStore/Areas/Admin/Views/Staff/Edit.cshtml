@@ -1,0 +1,99 @@
+@model FashionStore.Models.Staff
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Sửa</h1>
+
+<h4>Nhân viên</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdStaff" />
+            <input type="hidden" asp-for="Pass" name="passOld"/>
+            <input type="hidden" asp-for="StaffImage"/>
+            <div class="form-group">
+                <label asp-for="StaffName" class="control-label"></label>
+                <input asp-for="StaffName" class="form-control" />
+                <span asp-validation-for="StaffName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StaffAddress" class="control-label"></label>
+                <input asp-for="StaffAddress" class="form-control" />
+                <span asp-validation-for="StaffAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StaffPhone" class="control-label"></label>
+                <input asp-for="StaffPhone" class="form-control" />
+                <span asp-validation-for="StaffPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StaffBirthday" class="control-label"></label>
+                <input asp-for="StaffBirthday" class="form-control" type="datetime-local" />
+                <span asp-validation-for="StaffBirthday" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StaffIdentification" class="control-label"></label>
+                <input asp-for="StaffIdentification" class="form-control" />
+                <span asp-validation-for="StaffIdentification" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="imageStaff" class="control-label"></label>
+                <input asp-for="imageStaff" class="form-control" />
+                <span asp-validation-for="imageStaff" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pass" class="control-label"></label>
+                <input asp-for="Pass" class="form-control" type="password" />
+                <span asp-validation-for="Pass" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccountType" class="control-label"></label>
+                <select asp-for="AccountType" class="form-control">
+                    <option value="0">Khóa</option>
+                    <option value="1">Không dùng nữa</option>
+                    <option value="2">Đang sử dụng</option>
+                </select>
+                <span asp-validation-for="Pass" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StaffAccountType" class="control-label"></label>
+                <select asp-for="StaffAccountType" class="form-control">
+                    <option value="0">Admin</option>
+                    <option value="1">Nhân viên</option>
+                </select>
+                <span asp-validation-for="StaffAccountType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdBranch" class="control-label"></label>
+                <select asp-for="IdBranch" class="form-control" asp-items="ViewBag.IdBranch"></select>
+                <span asp-validation-for="IdBranch" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">
+        <button type="button" class="btn btn-info btn-icon-text">
+            <i class="mdi mdi-keyboard-return"></i>
+            Quay về
+        </button>
+    </a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

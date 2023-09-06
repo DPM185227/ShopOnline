@@ -1,0 +1,115 @@
+@model FashionStore.Models.Customer
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    mark {
+        box-shadow: 0 0 5px cyan, 0 0 25px cyan;
+    }
+
+    button:hover {
+        box-shadow: 0 0 5px cyan, 0 0 25px cyan, 0 0 50px cyan, 0 0 100px cyan, 0 0 200px cyan;
+    }
+
+    mark {
+        border: 2px solid;
+        border-radius: 12px;
+        padding: 5px;
+    }
+</style>
+
+
+<div class="card">
+<div class="card-body">
+        <h1 class="text-center">
+            <mark class="bg-success text-white">
+                Tạo mới
+                <i class="mdi mdi-account-edit-outline"></i>
+            </mark>
+        </h1>
+        <h4>Người dùng</h4>
+<hr />
+<div class="row">
+    <div class="col-9">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdCustomer" class="control-label"></label>
+                <input asp-for="IdCustomer" class="form-control" placeholder="Vui lòng nhập khách hàng"/>
+                <span asp-validation-for="IdCustomer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerName" class="control-label"></label>
+                <input asp-for="CustomerName" class="form-control" />
+                <span asp-validation-for="CustomerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerAddress" class="control-label"></label>
+                <input asp-for="CustomerAddress" class="form-control" />
+                <span asp-validation-for="CustomerAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerPhone" class="control-label"></label>
+                <input asp-for="CustomerPhone" class="form-control" />
+                <span asp-validation-for="CustomerPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CurstomerBirtday" class="control-label"></label>
+                <input asp-for="CurstomerBirtday" class="form-control" />
+                <span asp-validation-for="CurstomerBirtday" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CurstomerIdentification" class="control-label"></label>
+                <input asp-for="CurstomerIdentification" class="form-control" />
+                <span asp-validation-for="CurstomerIdentification" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerImage" class="control-label"></label>
+                <input asp-for="CustomerImage" class="form-control" />
+                <span asp-validation-for="CustomerImage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" placeholder="Vui lòng nhập tên đăng nhập" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pass" class="control-label"></label>
+                        <input asp-for="Pass" class="form-control" placeholder="Vui lòng nhập mật khẩu"/>
+                <span asp-validation-for="Pass" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerAccountType" class="control-label"></label>
+                <input asp-for="CustomerAccountType" class="form-control" />
+                <span asp-validation-for="CustomerAccountType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Authentication_code" class="control-label"></label>
+                <input asp-for="Authentication_code" class="form-control" />
+                <span asp-validation-for="Authentication_code" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div>
+    <a asp-action="Index">
+        <button type="button" class="btn btn-info btn-icon-text">
+            <i class="mdi mdi-keyboard-return"></i>
+            Quay về
+        </button>
+    </a>
+</div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

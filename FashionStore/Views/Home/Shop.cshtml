@@ -1,0 +1,488 @@
+@{
+    ViewData["Title"] = "Trang sản phẩm";
+    var listColor = (List<ProductColor>)ViewBag.listColor;
+    var listCategory = (List<Category>)ViewBag.listCategory;
+}
+<style>
+    #circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 25px;
+        background: black;
+        position: absolute;
+        margin-top: auto;
+        top: 15px;
+        right: 15px;
+    }
+
+</style>
+<section class="bg0 p-t-23 p-b-140">
+    <div class="container">
+        <div class="p-b-10">
+            <h3 style="text-align:center; font-size:20px;font-weight:bold;">
+                TỔNG QUAN VỀ SẢN PHẨM
+            </h3>
+        </div>
+
+
+
+
+        <div class="row">
+            <div class="col-md-3 mt-3 shadow-sm p-3 mb-5 bg-white rounded" id="productCategory">
+                @*
+                <div class="flex-w flex-l-m filter-tope-group m-tb-10">
+                <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*">
+                Tất cả
+                </button>
+                </div>
+
+                <div class="flex-w flex-c-m m-tb-10">
+                <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 js-show-filter">
+                <i class="icon-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"></i>
+                <i class="icon-close-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
+                Filter
+                </div>
+
+                <div class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search">
+                <i class="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"></i>
+                <i class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
+                Search
+                </div>
+                *@
+                <div class="mb-3" style="display:block;background-color: #ADD8E6;margin:auto;height:100px;border-radius:20px;">
+                    <div class="p-t-15 p-l-20">
+                        <h5 style="font-weight:bold;">GIÁ SẢN PHẨM</h5>
+                        <input type="range" id="productPrice" style="width:270px;" class="mt-3" min="0" max="1000000" />
+                        <div>
+                            <span style="margin-left:auto;">0</span>
+                            <span style="margin-left:150px;" id="textPrice"></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- category-->
+                <div style="background-color: #ADD8E6;margin:auto;padding-left:20px;padding-top:20px;border-radius:20px;" id="Category">
+                    @*@foreach (var item in listCategory)
+                    {
+                    <div class="flex-w flex-l-m filter-tope-group m-tb-10">
+                    <div>
+                    <input type="radio" value="@item.IdCategory" />
+                    <label>@item.CategoryName</label>
+                    </div>
+                    </div>
+                    }
+                    </div>*@
+                </div>
+            </div>
+
+
+            <div class="col-md-9 mt-3">
+                <div class="row isotope-grid" id="productList">
+                    @*@foreach (var productItem in Model)
+                    {
+                    <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
+                    <!-- Block2 -->
+                    <div class="block2">
+                    <div class="block2-pic hov-img0">
+                    @{
+                    var infoColorofProduct = listColor.Where(m => m.IdProduct == productItem.IdProduct && m.Active == 0).FirstOrDefault();
+                    //var imageProductActive = listSize.Where(m => m.IdcolorNavigation.IdProductNavigation.IdProduct == item.IdProduct).FirstOrDefault();
+
+                    var getListColorProduct = listColor.Where(m => m.IdProduct == productItem.IdProduct).ToList();
+                    }
+                    @if (infoColorofProduct != null)
+                    {
+                    <img src="~/@infoColorofProduct.ImageProductColor" width="400px" alt="IMG-PRODUCT" data-img="@productItem.IdProduct" id="productImage_@productItem.IdProduct">
+                    }
+                    else
+                    {
+                    <img src="~/Storage/NoImage.png" width="400px" alt="IMG-PRODUCT">
+                    }
+
+                    <a asp-action="ProductDetail" asp-controller="Home" asp-route-idProduct="@productItem.IdProduct" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+                    Xem chi tiết
+                    </a>
+                    </div>
+
+                    <div class="block2-txt flex-w flex-t p-t-14">
+                    <!--list color-->
+                    <div style="margin:auto;" class="listColor">
+                    @foreach (var itemColor in getListColorProduct)
+                    {
+                    <input value="@itemColor.Idcolor" id="btnColor_@itemColor.Idcolor" data-idColor="@itemColor.Idcolor" width="30" data-idProduct="@itemColor.IdProduct" height="30" type="image" src="~/@itemColor.ImageColor" style="border-radius:50px;opacity: 0.5;display:inline-block;" />
+                    }
+                    </div>
+                    <!--propety product-->
+                    <div class="block2-txt-child1 flex-col-l " style="text-algin:center;">
+                    <a asp-action="ProductDetail" asp-controller="Home" asp-route-idProduct="@productItem.IdProduct" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                    <b>@productItem.ProductName</b>
+                    </a>
+
+                    <span class="stext-105 cl3" id='productPrice'>
+                    @productItem.ProductPrice.ToString("N0") <u>đ</u>
+                    </span>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                    }*@
+                </div>
+            </div>
+            <!-- Load more -->
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+    <script type="text/javascript">
+        // load
+        $(document).ready(function () {
+            loadProduct();
+            loadCategory();
+        });
+
+        function loadProduct() {
+            $.ajax({
+                type: "GET",
+                url: "/Home/loadAllProduct/",
+                dataType: "JSON",
+                success: function (data) {
+                    var objData = $.parseJSON(data.data);
+                    console.log(objData);
+                    var outPut = '';
+                    $.each(objData, function (key, itemProduct) {
+                        outPut += '<div class="col-sm-6 col-md-4 col-lg-4 p-b-35 isotope-item women">';
+                        outPut += '<div class="block2">';
+                        outPut += '<div class="block2-pic hov-img0">';
+                        if (itemProduct.imageProduct != null) {
+                            outPut += '<img src="/' + itemProduct.imageProduct + '" width="400px" height="400px" alt="IMG-PRODUCT" data-img="' + itemProduct.idProduct + '" id="productImage_' + itemProduct.idProduct + '" />';
+                        }
+                        else {
+                            outPut += '<img src="/Storage/NoImage.png" width="400px" height="400px" alt="IMG-PRODUCT">';
+                        }
+                        outPut += '<a  href="/Home/ProductDetail?idProduct=' + itemProduct.idProduct + '" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"> Xem chi tiết</a>';
+                        outPut += '</div>';
+
+                        outPut += '<div class="block2-txt flex-w flex-t p-t-14">';
+                        outPut += ' <div style="margin:auto;" class="listColor">';
+                        if (itemProduct.listColor != null) {
+                            $.each(itemProduct.listColor, function (key, itemColor) {
+                                if (itemColor['Idcolor'] != null) {
+                                    outPut += '<input value="' + itemColor.Idcolor + '" id="btnColor_' + itemColor.Idcolor + '" data-idColor="' + itemColor.Idcolor + '" width="30" data-idProduct="' + itemProduct.idProduct + '" height="30" type="image" src="/' + itemColor.ImageColor + '" style="border-radius:50px;opacity: 0.5;display:inline-block;" />';
+                                }
+                            });
+                        }
+                        if(itemProduct.productPrecent > 0){
+                            outPut += '<div id="circle">';
+                            outPut += '<div style = "margin-top:14px;margin-left:3px;" >';
+                            outPut += '<span style="margin-left:auto;color:white;" > - ' + itemProduct.productPrecent + '%</span>';
+                            outPut += '</div> </div>';
+                        }
+                        
+                        outPut += '</div>';
+                        // product propety
+                        outPut += '<div class="block2-txt-child1 flex-col-l " style="text-algin:center;">';
+                        outPut += '<a href="/Home/ProductDetail?idProduct=' + itemProduct.idProduct + '" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"><b>' + itemProduct.nameProduct + '</b></a>';
+                        outPut += '<span class="stext-105 cl3" id="productPrice">' + convertMoney(itemProduct.productPrice) + '</span>';
+                        outPut += '</div>';
+
+                        outPut += '</div>';
+                        outPut += '</div>';
+                        outPut += '</div>';
+                    });
+                    outPut += '<div class="flex-c-m flex-w w-full p-t-45" id="d">';
+                    outPut += '<button id= "btnLoadMore" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04" data-countData="3" >';
+                    outPut += 'Tải thêm </button> </div>';
+                    // load lên giao diện
+                    $('div > #productList').html(outPut);
+                    // gọi các event có các element được load lên từ ajax reponse
+                    renderEvent();
+                    clickLoadMore();
+                }
+            });
+        }
+
+        //load category
+        function loadCategory() {
+            $.ajax({
+                type: "GET",
+                url: "/Home/getCategory/",
+                dataType: "Json",
+                async: false,
+                success: function (data) {
+                    var objData = $.parseJSON(data.data);
+                    var outPut = '';
+                    outPut += '<button id="clearfilter"> Bỏ lọc </button>';
+                    outPut += '<h5 style = "font-weight:bold;"> DANH MỤC SẢN PHẨM</h5>';
+                    $.each(objData, function (key, propetyObj) {
+                        outPut += '<div class="flex-w flex-l-m filter-tope-group m-tb-10" class="listCategory">';
+                        outPut += '<div>';
+                        outPut += '<input type="radio" name="categoryList" id="' + propetyObj.idCategory + '" value="' + propetyObj.idCategory + '" />';
+                        outPut += '<label>' + propetyObj.nameCategory + '</label>';
+                        outPut += '</div>';
+                        outPut += '</div>';
+                    });
+                    $('#Category').html(outPut);
+                    clickCategory();
+                    clearFilter();
+
+                }
+            });
+        }
+
+        //
+        function clickCategory() {
+            // evnet click
+            $('#Category input[type="radio"][name="categoryList"]').on('change', function () {
+                //$('input[type="radio"][class="categoryList"]').removeAttr('checked');
+                var idCategory = $(this).val();
+                $.ajax({
+                    type: "GET",
+                    url: "/Home/categoryFilter/",
+                    dataType: "JSON",
+                    data: {
+                        idCategory: idCategory,
+                    },
+                    success: function (data) {
+                        var objData = $.parseJSON(data.data);
+                        if (objData !== null) {
+                            var outPut = '';
+                            $.each(objData, function (key, itemProduct) {
+                                outPut += '<div class="col-sm-6 col-md-4 col-lg-4 p-b-35 isotope-item women">';
+                                outPut += '<div class="block2">';
+                                outPut += '<div class="block2-pic hov-img0">';
+                                if (itemProduct.imageProduct != null) {
+                                    outPut += '<img src="/' + itemProduct.imageProduct + '" width="400px" height="400px" alt="IMG-PRODUCT" data-img="' + itemProduct.idProduct + '" id="productImage_' + itemProduct.idProduct + '" />';
+                                }
+                                else {
+                                    outPut += '<img src="/Storage/NoImage.png" width="400px" alt="IMG-PRODUCT">';
+                                }
+                                outPut += '<a  href="/Home/ProductDetail?idProduct=' + itemProduct.idProduct + '" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"> Xem chi tiết</a>';
+                                outPut += '</div>';
+
+                                outPut += '<div class="block2-txt flex-w flex-t p-t-14">';
+                                outPut += ' <div style="margin:auto;" class="listColor">';
+                                if (itemProduct.listColor != null) {
+                                    $.each(itemProduct.listColor, function (key, itemColor) {
+                                        if (itemColor['Idcolor'] != null) {
+                                            outPut += '<input value="' + itemColor.Idcolor + '" id="btnColor_' + itemColor.Idcolor + '" data-idColor="' + itemColor.Idcolor + '" width="30" data-idProduct="' + itemProduct.idProduct + '" height="30" type="image" src="/' + itemColor.ImageColor + '" style="border-radius:50px;opacity: 0.5;display:inline-block;" />';
+                                        }
+                                    });
+                                }
+                                if (itemProduct.productPrecent > 0) {
+                                    outPut += '<div id="circle">';
+                                    outPut += '<div style = "margin-top:14px;margin-left:3px;" >';
+                                    outPut += '<span style="margin-left:auto;color:white;" > - ' + itemProduct.productPrecent + '%</span>';
+                                    outPut += '</div> </div>';
+                                }
+                                outPut += '</div>';
+                                // product propety
+                                outPut += '<div class="block2-txt-child1 flex-col-l " style="text-algin:center;">';
+                                outPut += '<a href="/Home/ProductDetail?idProduct=' + itemProduct.idProduct + '" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"><b>' + itemProduct.nameProduct + '</b></a>';
+                                outPut += '<span class="stext-105 cl3" id="productPrice">' + convertMoney(itemProduct.productPrice) + '</span>';
+                                outPut += '</div>';
+
+                                outPut += '</div>';
+                                outPut += '</div>';
+                                outPut += '</div>';
+                            });
+                        }
+                        else {
+                            outPut = '<h5 style="font-size:15px;">Hiện tại không có sản phẩm</h5>';
+                        }
+                        $('div > #productList').html(outPut);
+                        // set attribute checked
+                        $(this).find('input:radio').attr('checked', true);
+                        renderEvent();
+                        clickLoadMore();
+                    }
+                });
+            });
+        }
+
+        //
+        $('#productPrice').mousemove(function () {
+            var moneyConvert = $(this).val();
+            if (moneyConvert >= 0) {
+                var moneyPrice = parseInt($(this).val());
+                $('#textPrice').text(convertMoney(moneyPrice));
+                $.ajax({
+                    type: "GET",
+                    url: "/Home/priceFilter/",
+                    dataType: "JSON",
+                    data: {
+                        priceFiilter: moneyConvert,
+                    },
+                    success: function (data) {
+                        var objData = $.parseJSON(data.data);
+                        if (objData !== null) {
+                            var outPut = '';
+                            $.each(objData, function (key, itemProduct) {
+                                outPut += '<div class="col-sm-6 col-md-4 col-lg-4 p-b-35 isotope-item women">';
+                                outPut += '<div class="block2">';
+                                outPut += '<div class="block2-pic hov-img0">';
+                                if (itemProduct.imageProduct != null) {
+                                    outPut += '<img src="/' + itemProduct.imageProduct + '" width="400px" height="400px" alt="IMG-PRODUCT" data-img="' + itemProduct.idProduct + '" id="productImage_' + itemProduct.idProduct + '" />';
+                                }
+                                else {
+                                    outPut += '<img src="/Storage/NoImage.png" width="400px" height="400px" alt="IMG-PRODUCT">';
+                                }
+                                outPut += '<a  href="/Home/ProductDetail?idProduct=' + itemProduct.idProduct + '" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"> Xem chi tiết</a>';
+                                outPut += '</div>';
+
+                                outPut += '<div class="block2-txt flex-w flex-t p-t-14">';
+                                outPut += ' <div style="margin:auto;" class="listColor">';
+                                if (itemProduct.listColor != null) {
+                                    $.each(itemProduct.listColor, function (key, itemColor) {
+                                        if (itemColor['Idcolor'] != null) {
+                                            outPut += '<input value="' + itemColor.Idcolor + '" id="btnColor_' + itemColor.Idcolor + '" data-idColor="' + itemColor.Idcolor + '" width="30" data-idProduct="' + itemProduct.idProduct + '" height="30" type="image" src="/' + itemColor.ImageColor + '" style="border-radius:50px;opacity: 0.5;display:inline-block;" />';
+                                        }
+                                    });
+                                }
+                                if (itemProduct.productPrecent > 0) {
+                                    outPut += '<div id="circle">';
+                                    outPut += '<div style = "margin-top:14px;margin-left:3px;" >';
+                                    outPut += '<span style="margin-left:auto;color:white;" > - ' + itemProduct.productPrecent + '%</span>';
+                                    outPut += '</div> </div>';
+                                }
+                                outPut += '</div>';
+                                // product propety
+                                outPut += '<div class="block2-txt-child1 flex-col-l " style="text-algin:center;">';
+                                outPut += '<a href="/Home/ProductDetail?idProduct=' + itemProduct.idProduct + '" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"><b>' + itemProduct.nameProduct + '</b></a>';
+                                outPut += '<span class="stext-105 cl3" id="productPrice">' + convertMoney(itemProduct.productPrice) + '</span>';
+                                outPut += '</div>';
+
+                                outPut += '</div>';
+                                outPut += '</div>';
+                                outPut += '</div>';
+                            });
+                        }
+                        else {
+                            outPut = '<h5 style="font-size:15px;">Hiện tại không có sản phẩm</h5>';
+                        }
+                        $('div > #productList').html(outPut);
+                        renderEvent();
+                        clickLoadMore();
+                    }
+                });
+            }
+        });
+
+        // function convert VND
+        function convertMoney(amt) {
+            return amt.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+        };
+        // click input change image active color
+
+        function renderEvent(){
+            $('.listColor > input[type="image"]').on('click', function () {
+                // get id
+                var getIdProduct = $(this).attr('data-idProduct');
+                var idColor = $(this).val();
+                var getDataAtribute = $('#productImage').attr('data-img');
+                // reset css
+                $('.listColor input').css({ 'border': '0px solid red', 'opacity': '0.5' });
+                $.ajax({
+                    type: 'GET',
+                    url: '/Home/getInfoColor/',
+                    data: { idColor: idColor },
+                    dataType: "JSON",
+                    success: function (result) {
+                        var obj = jQuery.parseJSON(result);
+                        // ảnh của sản phẩm nào của màu nào
+                        $('#productImage_' + getIdProduct).attr('src', '/' + obj['ImageProductColor']);
+                        // màu nào đang chọn
+                        $('#btnColor_' + idColor).css({ 'border': '2px solid red', 'opacity': '1' });
+                    }
+                });
+            });
+        }
+
+        function clearFilter(){
+            $('#clearfilter').click(function () {
+                $('input[type="radio"]').removeAttr('checked');
+                loadProduct();
+            });
+        }
+       
+
+        // load more
+        function clickLoadMore(){
+            $("#btnLoadMore").click(function () {
+                $(this).html("Loading......");
+                var getCountShow = $(this).attr('data-countData');
+                var totalShow = parseInt(getCountShow) + parseInt(3);
+
+                console.log(totalShow);
+                $.ajax({
+                    type: "GET",
+                    url: "/Home/loadMore/",
+                    dataType: "JSON",
+                    data: {
+                        dataShow: totalShow,
+                    },
+                    success: function (data) {
+                        var objData = $.parseJSON(data.data);
+                        console.log(objData);
+                        if (objData !== null) {
+                            var outPut = '';
+                            $.each(objData, function (key, itemProduct) {
+                                outPut += '<div class="col-sm-6 col-md-4 col-lg-4 p-b-35 isotope-item women">';
+                                outPut += '<div class="block2">';
+                                outPut += '<div class="block2-pic hov-img0">';
+                                if (itemProduct.imageProduct != null) {
+                                    outPut += '<img src="/' + itemProduct.imageProduct + '" width="400px" height="400px" alt="IMG-PRODUCT" data-img="' + itemProduct.idProduct + '" id="productImage_' + itemProduct.idProduct + '" />';
+                                }
+                                else {
+                                    outPut += '<img src="/Storage/NoImage.png" width="400px" alt="IMG-PRODUCT">';
+                                }
+                                outPut += '<a  href="/Home/ProductDetail?idProduct=' + itemProduct.idProduct + '" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"> Xem chi tiết</a>';
+                                outPut += '</div>';
+
+                                outPut += '<div class="block2-txt flex-w flex-t p-t-14">';
+                                outPut += ' <div style="margin:auto;" class="listColor">';
+                                if (itemProduct.listColor != null) {
+                                    $.each(itemProduct.listColor, function (key, itemColor) {
+                                        if (itemColor['Idcolor'] != null) {
+                                            outPut += '<input value="' + itemColor.Idcolor + '" id="btnColor_' + itemColor.Idcolor + '" data-idColor="' + itemColor.Idcolor + '" width="30" data-idProduct="' + itemProduct.idProduct + '" height="30" type="image" src="/' + itemColor.ImageColor + '" style="border-radius:50px;opacity: 0.5;display:inline-block;" />';
+                                        }
+                                    });
+                                }
+                                if (itemProduct.productPrecent > 0) {
+                                    outPut += '<div id="circle">';
+                                    outPut += '<div style = "margin-top:14px;margin-left:3px;" >';
+                                    outPut += '<span style="margin-left:auto;color:white;" > - ' + itemProduct.productPrecent + '%</span>';
+                                    outPut += '</div> </div>';
+                                }
+                                outPut += '</div>';
+                                // product propety
+                                outPut += '<div class="block2-txt-child1 flex-col-l " style="text-algin:center;">';
+                                outPut += '<a href="/Home/ProductDetail?idProduct=' + itemProduct.idProduct + '" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"><b>' + itemProduct.nameProduct + '</b></a>';
+                                outPut += '<span class="stext-105 cl3" id="productPrice">' + convertMoney(itemProduct.productPrice) + '</span>';
+                                outPut += '</div>';
+
+                                outPut += '</div>';
+                                outPut += '</div>';
+                                outPut += '</div>';
+                            });
+                            outPut += '<div class="flex-c-m flex-w w-full p-t-45">';
+                            outPut += '<button id= "btnLoadMore" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04" data-countData="'+totalShow+'" >';
+                            outPut += 'Tải thêm </button> </div>';
+                        }
+                        else {
+                            $(this).text("No data");
+                        }
+                        // show data in html and set data-countData value
+                        $('div > #productList').html(outPut);
+                        $(this).attr('data-countData', totalShow);
+                        // call event element after load 
+                        renderEvent();
+                        clickLoadMore();
+                    }
+                });
+            });
+        }
+        
+
+    </script>
+}
+

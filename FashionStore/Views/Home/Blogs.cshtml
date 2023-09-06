@@ -1,0 +1,160 @@
+@model IEnumerable<FashionStore.Models.Post>
+@{
+    ViewData["Title"] = "DANH SÁCH BÀI VIẾT";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Blog</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="~/UI/Customer/images/icons/favicon.png" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/UI/Customer/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/UI/Customer/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/UI/Customer/fonts/iconic/css/material-design-iconic-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/UI/Customer/fonts/linearicons-v1.0.0/icon-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/UI/Customer/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/UI/Customer/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/UI/Customer/vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/UI/Customer/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/UI/Customer/vendor/perfect-scrollbar/perfect-scrollbar.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/UI/Customer/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/UI/Customer/css/main.css">
+    <!--===============================================================================================-->
+</head>
+
+
+@*<section class="bg-img1 txt-center p-lr-15 p-tb-92" style="background-image: url(UI/Customer/images/bg-02.jpg)">
+    <h2 class="ltext-105 cl0 txt-center">
+        Blog
+    </h2>
+</section>*@
+<section class="section-slide">
+    <div class="wrap-slick1">
+        <div class="slick1">
+            <div class="item-slick1" style="background-image: url(UI/Customer/images/slide-05.jpg)">
+                <div class="container h-full">
+                    <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
+                        <div class="layer-slick1 animated visible-false" data-appear="fadeInDown" data-delay="0">
+                            <span class="ltext-101 cl2 respon2">
+                                Women Collection 2018
+                            </span>
+                        </div>
+
+                        <div class="layer-slick1 animated visible-false" data-appear="fadeInUp" data-delay="800">
+                            <h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
+                                NEW SEASON
+                            </h2>
+                        </div>
+
+                        <div class="layer-slick1 animated visible-false" data-appear="zoomIn" data-delay="1600">
+                            <a href="product.html" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
+                                Shop Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item-slick1" style="background-image: url(UI/Customer/images/PK.jpg);">
+                <div class="container h-full">
+                    <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
+                        <div class="layer-slick1 animated visible-false" data-appear="rollIn" data-delay="0">
+                            <span class="ltext-101 cl2 respon2">
+                                Men New-Season
+                            </span>
+                        </div>
+
+                        <div class="layer-slick1 animated visible-false" data-appear="lightSpeedIn" data-delay="800">
+                            <h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
+                                Jackets & Coats
+                            </h2>
+                        </div>
+
+                        <div class="layer-slick1 animated visible-false" data-appear="slideInUp" data-delay="1600">
+                            <a href="product.html" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
+                                Shop Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item-slick1" style="background-image: url(UI/Customer/images/slide-06.jpg);">
+                <div class="container h-full">
+                    <div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
+                        <div class="layer-slick1 animated visible-false" data-appear="rotateInDownLeft" data-delay="0">
+                            <span class="ltext-101 cl2 respon2">
+                                Men Collection 2018
+                            </span>
+                        </div>
+
+                        <div class="layer-slick1 animated visible-false" data-appear="rotateInUpRight" data-delay="800">
+                            <h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
+                                New arrivals
+                            </h2>
+                        </div>
+
+                        <div class="layer-slick1 animated visible-false" data-appear="rotateIn" data-delay="1600">
+                            <a href="product.html" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
+                                Shop Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Content page -->
+<section class="bg0 p-t-62 p-b-60">
+    <div class="container">
+        <div class="row">
+            @if (Model.Count() > 0)
+            {
+                foreach (var item in Model)
+                {
+                    <div class="col-md-6 mt-2">
+                        <div class="media">
+                            <img class="mr-3" src="~/@item.Banner" alt="Generic placeholder image" style="width: 150px;height:150px;">
+                            <div class="media-body">
+                                <h5>
+                                    <a asp-action="ViewBlog" asp-controller="Home" asp-route-id="@item.IdBaiViet">@item.Title</a>
+                                </h5>
+                                <p>@item.Content</p>
+                                <p>Đươc thêm bởi: @item.IdStaffNavigation.StaffName</p>
+                                <p><i class="fa-sharp fa-solid fa-eye"></i> @item.ViewPost</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <span>Hiện tại không có bài viết nào</span>
+            }
+
+           @* <!-- Pagination -->
+            <div class="flex-l-m flex-w w-full p-t-10 m-lr--7">
+                <a href="#" class="flex-c-m how-pagination1 trans-04 m-all-7 active-pagination1">
+                    1
+                </a>
+
+                <a href="#" class="flex-c-m how-pagination1 trans-04 m-all-7">
+                    2
+                </a>
+            </div>*@
+        </div>
+    </div>
+</section>

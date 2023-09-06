@@ -1,0 +1,63 @@
+@model FashionStore.Models.CommentRep
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    mark {
+        box-shadow: 0 0 5px cyan, 0 0 25px cyan;
+    }
+
+    button:hover {
+        box-shadow: 0 0 5px cyan, 0 0 25px cyan, 0 0 50px cyan, 0 0 100px cyan, 0 0 200px cyan;
+    }
+
+    mark {
+        border: 2px solid;
+        border-radius: 12px;
+        padding: 5px;
+    }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <h1 class="text-center">
+            <mark class="bg-success text-white">
+                Tạo mới
+                <i class="mdi mdi-account-edit-outline"></i>
+            </mark>
+        </h1>
+
+<h4>Trả lời bình luận</h4>
+<hr />
+<div class="row">
+    <div class="col-9">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <input asp-for="Content" class="form-control" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">
+        <button type="button" class="btn btn-info btn-icon-text">
+            <i class="mdi mdi-keyboard-return"></i>
+            Quay về
+        </button>
+    </a>
+</div>
+</div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
